@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blacksburg Church</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+@font-face { font-family:'Söhne'; src:url('fonts/So_hne-Leicht.otf') format('opentype'); font-weight:300; font-style:normal; }
+@font-face { font-family:'Söhne'; src:url('fonts/So_hne-LeichtKursiv.otf') format('opentype'); font-weight:300; font-style:italic; }
+@font-face { font-family:'Söhne'; src:url('fonts/So_hne-Kra_ftig.otf') format('opentype'); font-weight:400; font-style:normal; }
+@font-face { font-family:'Söhne'; src:url('fonts/So_hne-Kra_ftigKursiv.otf') format('opentype'); font-weight:400; font-style:italic; }
+@font-face { font-family:'Söhne'; src:url('fonts/So_hne-Halbfett.otf') format('opentype'); font-weight:600; font-style:normal; }
+@font-face { font-family:'Söhne'; src:url('fonts/So_hne-Fett.otf') format('opentype'); font-weight:700; font-style:normal; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { font-family: 'Söhne', 'Helvetica Neue', sans-serif; background: #fff; color: #1D3A4F; }
+button { font-family: inherit; }
+a:focus, button:focus { outline: none; }
+::selection { background: #F58220; color: #fff; }
+/* Custom scrollbar for dark areas */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #FDF8F1; }
+::-webkit-scrollbar-thumb { background: #E8D9BC; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #1D3A4F; }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="src/Primitives.jsx"></script>
+<script type="text/babel" src="src/Chrome.jsx"></script>
+<script type="text/babel" src="src/HomePage.jsx"></script>
+<script type="text/babel" src="src/AboutPage.jsx"></script>
+<script type="text/babel" src="src/HouseChurchesPage.jsx"></script>
+<script type="text/babel" src="src/GatheringsPage.jsx"></script>
+<script type="text/babel" src="src/MessagesPage.jsx"></script>
+<script type="text/babel" src="src/GivePage.jsx"></script>
+<script type="text/babel" src="src/ConnectPage.jsx"></script>
+<script type="text/babel" src="src/Tweaks.jsx"></script>
+
+<script type="text/babel">
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "heroVariant": "topo",
+  "density": "spacious",
+  "accentStyle": "orange",
+  "announcementBar": true
+}/*EDITMODE-END*/;
+
+function App() {
+  const [page, setPage] = React.useState(() => localStorage.getItem('bc-page') || 'home');
+  const [tweaks, setTweaks] = React.useState(TWEAK_DEFAULTS);
+  const [editMode, setEditMode] = React.useState(false);
+
+  const navigate = (p) => {
+    setPage(p);
+    localStorage.setItem('bc-page', p);
+    window.scrollTo({ top: 0 });
+  };
+
+  // Tweaks handshake
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      if (!e.data || !e.data.type) return;
+      if (e.data.type === '__activate_edit_mode') setEditMode(true);
+      if (e.data.type === '__deactivate_edit_mode') setEditMode(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const setTweak = (key, value) => {
+    setTweaks(t => {
+      const nt = { ...t, [key]: value };
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: value } }, '*');
+      return nt;
+    });
+  };
+
+  // Apply accent style globally via CSS var override (swaps orange hue)
+  React.useEffect(() => {
+    // no-op for now; could recolor, but we keep orange default strong
+  }, [tweaks.accentStyle]);
+
+  const darkNav = true;
+  const transparentNav = page === 'home';
+
+  const appContent = (
+    <div data-screen-label={page}>
+      {tweaks.announcementBar && <Announcement onNav={navigate} />}
+      <Nav dark={darkNav} transparent={transparentNav && tweaks.heroVariant !== 'type'} activePage={page} onNav={navigate} />
+
+      {page === 'home'           && <HomePage onNav={navigate} heroVariant={tweaks.heroVariant} />}
+      {page === 'about'          && <AboutPage onNav={navigate} />}
+      {page === 'house-churches' && <HouseChurchesPage onNav={navigate} />}
+      {page === 'gatherings'     && <GatheringsPage onNav={navigate} />}
+      {page === 'messages'       && <MessagesPage onNav={navigate} />}
+      {page === 'give'           && <GivePage onNav={navigate} />}
+      {page === 'connect'        && <ConnectPage onNav={navigate} />}
+
+      <Footer onNav={navigate} />
+    </div>
+  );
+
+  return (
+    <>
+      {appContent}
+      {editMode && <TweaksPanel tweaks={tweaks} setTweak={setTweak} />}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
