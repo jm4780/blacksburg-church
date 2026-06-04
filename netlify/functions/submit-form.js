@@ -55,23 +55,28 @@ async function addNote(personId, noteText) {
 // fieldMap maps context keys to PCO form field IDs.
 // Phone is intentionally excluded — it's added to the person profile separately.
 async function submitPCOForm(formId, personId, fieldMap, context) {
-  const included = Object.entries(context)
-    .filter(([key, val]) => fieldMap[key] && val)
-    .map(([key, val]) => ({
-      type: 'FormSubmissionValue',
-      attributes: {
-        value: Array.isArray(val) ? val.join(', ') : val,
-        form_field_id: fieldMap[key],
-      },
-    }));
-
-  await pcoPost(`/forms/${formId}/form_submissions`, {
+  // Step 1: create the submission
+  const submission = await pcoPost(`/forms/${formId}/form_submissions`, {
     data: {
       type: 'FormSubmission',
       attributes: { person_id: personId },
     },
-    included,
   });
+
+  const submissionId = submission.data.id;
+  console.log('FormSubmission created:', submissionId);
+
+  // Step 2: post each field value to the submission
+  const entries = Object.entries(context).filter(([key, val]) => fieldMap[key] && val);
+  for (const [key, val] of entries) {
+    const value = Array.isArray(val) ? val.join(', ') : val;
+    await pcoPost(`/forms/${formId}/form_submissions/${submissionId}/form_submission_values`, {
+      data: {
+        type: 'FormSubmissionValue',
+        attributes: { value, form_field_id: fieldMap[key] },
+      },
+    }).catch(err => console.error(`Value error field ${fieldMap[key]}:`, err.message));
+  }
 }
 
 // Add PCO form IDs and field mappings here as each form is set up in Planning Center.
