@@ -71,7 +71,7 @@ async function fetchSermons() {
   if (!listRes.ok) throw new Error('Could not load messages.');
   const listData = await listRes.json();
 
-  const items = (listData.items || []).filter(item => item.snippet.title.includes(' | '));
+  const items = (listData.items || []).filter(item => item.snippet.title.split(' | ').length >= 3);
   if (items.length === 0) return [];
 
   const ids = items.map(i => i.snippet.resourceId.videoId).join(',');
