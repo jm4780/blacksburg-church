@@ -393,7 +393,7 @@ function VisionBuildings({ onNav }) {
             lineHeight: 1.0,
             marginTop: 8,
           }}>
-            We only pay for space<br/>
+            <span style={{ whiteSpace: 'nowrap' }}>We only pay for space</span><br/>
             <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>
               that pays for itself.
             </span>
