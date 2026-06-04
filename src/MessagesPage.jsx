@@ -2,11 +2,11 @@
 // Sermons pulled live from YouTube. Title format: "Series | Sermon Title | Scripture"
 // Add/update descriptions below when a new series begins.
 
-const YT_KEY     = 'AIzaSyCT_Mj3GFI1XeJUkvHpMBGaeJdwGMnO1Uk';
-const YT_UPLOADS = 'UUcAIoVmshoxCk0biyrJ4nSA';
-const YT_CHANNEL = 'https://www.youtube.com/@blacksburgchurch';
-const CACHE_KEY  = 'bc-sermons-v2';
-const CACHE_TTL  = 60 * 60 * 1000; // 1 hour
+const YT_KEY      = 'AIzaSyCT_Mj3GFI1XeJUkvHpMBGaeJdwGMnO1Uk';
+const YT_PLAYLIST = 'PL6y7I4ZAQRS50NzxHXBtaQzqMM_4PeUp_';
+const YT_CHANNEL  = 'https://www.youtube.com/@blacksburgchurch';
+const CACHE_KEY   = 'bc-sermons-v3';
+const CACHE_TTL   = 60 * 60 * 1000; // 1 hour
 
 const SERIES_DESCS = {
   'God In Us':       'A study of the Holy Spirit — who he is, what he does, and why it matters.',
@@ -30,12 +30,8 @@ function parseSermonTitle(ytTitle) {
   const parts = ytTitle.split(' | ');
   if (parts.length < 2) return null;
   const passage = parts[2] ? parts[2].trim() : '';
-  return {
-    series:  parts[0].trim(),
-    title:   parts[1].trim(),
-    passage,
-    book:    passage.split(/\s+/)[0] || '',
-  };
+  const book    = passage ? passage.split(/\s+/)[0] : parts[0].trim(); // fall back to series as book grouping
+  return { series: parts[0].trim(), title: parts[1].trim(), passage, book };
 }
 
 function formatDate(iso) {
@@ -66,12 +62,13 @@ async function fetchSermons() {
   } catch (_) {}
 
   const listRes = await fetch(
-    `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${YT_UPLOADS}&maxResults=50&key=${YT_KEY}`
+    `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${YT_PLAYLIST}&maxResults=50&key=${YT_KEY}`
   );
   if (!listRes.ok) throw new Error('Could not load messages.');
   const listData = await listRes.json();
 
-  const items = (listData.items || []).filter(item => item.snippet.title.split(' | ').length >= 3);
+  // Any video in the playlist is a sermon — require at least Series | Title
+  const items = (listData.items || []).filter(item => item.snippet.title.includes(' | '));
   if (items.length === 0) return [];
 
   const ids = items.map(i => i.snippet.resourceId.videoId).join(',');
