@@ -398,6 +398,9 @@ function VisionBuildings({ onNav }) {
               that pays for itself.
             </span>
           </h2>
+          <p style={{ fontFamily: fontBody, fontSize: 19, color: BC.navyMuted, lineHeight: 1.7, fontWeight: 300, marginTop: 28, maxWidth: 640 }}>
+            Space is not sacred, but sacred things happen in space.
+          </p>
         </div>
 
         {/* Supporting points — three structured columns */}
