@@ -52,31 +52,34 @@ async function addNote(personId, noteText) {
 }
 
 // Submit to a PCO form so the submission appears in Planning Center reports.
-// fieldMap maps context keys to PCO form field IDs.
-// Phone is intentionally excluded — it's added to the person profile separately.
-async function submitPCOForm(formId, personId, fieldMap, context) {
-  // Step 1: create the submission
+// Submit to a PCO form using person_attributes so PCO matches/creates the person.
+// Returns the resolved person ID so phone can be added afterward.
+async function submitPCOForm(formId, firstName, lastName, email, fieldMap, context) {
+  const included = Object.entries(context)
+    .filter(([key, val]) => fieldMap[key] && val)
+    .map(([key, val]) => ({
+      type: 'FormSubmissionValue',
+      attributes: {
+        value: Array.isArray(val) ? val.join(', ') : val,
+        form_field_id: fieldMap[key],
+      },
+    }));
+
   const submission = await pcoPost(`/forms/${formId}/form_submissions`, {
     data: {
       type: 'FormSubmission',
-      attributes: { person_id: personId },
+      attributes: {
+        person_attributes: {
+          first_name: firstName,
+          last_name: lastName,
+          emails_attributes: [{ location: 'Home', address: email }],
+        },
+      },
     },
+    included,
   });
 
-  const submissionId = submission.data.id;
-  console.log('FormSubmission created:', submissionId);
-
-  // Step 2: post each field value to the submission
-  const entries = Object.entries(context).filter(([key, val]) => fieldMap[key] && val);
-  for (const [key, val] of entries) {
-    const value = Array.isArray(val) ? val.join(', ') : val;
-    await pcoPost(`/forms/${formId}/form_submissions/${submissionId}/form_submission_values`, {
-      data: {
-        type: 'FormSubmissionValue',
-        attributes: { value, form_field_id: fieldMap[key] },
-      },
-    }).catch(err => console.error(`Value error field ${fieldMap[key]}:`, err.message));
-  }
+  return submission.data.relationships.person.data.id;
 }
 
 // Add PCO form IDs and field mappings here as each form is set up in Planning Center.
@@ -117,15 +120,18 @@ exports.handler = async (event) => {
     const firstName = parts[0];
     const lastName  = parts.slice(1).join(' ') || '';
 
-    const personId = await createPerson(firstName, lastName);
-    await addEmail(personId, email);
-    await addPhone(personId, phone);
-
     const formConfig = PCO_FORMS[formType];
+    let personId;
+
     if (formConfig) {
-      await submitPCOForm(formConfig.formId, personId, formConfig.fieldMap, context);
+      // Let PCO match/create the person via person_attributes, then add phone
+      personId = await submitPCOForm(formConfig.formId, firstName, lastName, email, formConfig.fieldMap, context);
+      await addPhone(personId, phone);
     } else {
-      // Fallback for forms not yet configured in PCO — store as a note
+      // Fallback: create person directly and store context as a note
+      personId = await createPerson(firstName, lastName);
+      await addEmail(personId, email);
+      await addPhone(personId, phone);
       const noteLines = [`Form: ${formType}`];
       Object.entries(context).forEach(([k, v]) => {
         if (v) noteLines.push(`${k}: ${Array.isArray(v) ? v.join(', ') : v}`);
