@@ -1,86 +1,53 @@
-// Receives form submissions, creates people in Planning Center Online,
-// and submits to the matching PCO form so submissions appear in reports.
-// Requires env vars: PCO_APP_ID and PCO_SECRET (from your PCO Personal Access Token).
+// Receives form submissions and creates items in Monday.com boards.
+// Requires env var: MONDAY_TOKEN (from Monday.com → Profile → Developers → API Tokens).
 
-const PCO_BASE = 'https://api.planningcenteronline.com/people/v2';
+const MONDAY_API = 'https://api.monday.com/v2';
 
-function pcoAuth() {
-  const creds = Buffer.from(`${process.env.PCO_APP_ID}:${process.env.PCO_SECRET}`).toString('base64');
-  return `Basic ${creds}`;
-}
-
-async function pcoPost(path, body) {
-  const url = `${PCO_BASE}${path}`;
-  const res = await fetch(url, {
+async function mondayPost(query) {
+  const res = await fetch(MONDAY_API, {
     method: 'POST',
-    headers: { 'Authorization': pcoAuth(), 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
+    headers: {
+      'Authorization': `Bearer ${process.env.MONDAY_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ query }),
   });
   const text = await res.text();
-  if (!res.ok) {
-    console.error(`PCO POST ${url} → ${res.status}: ${text}`);
-    throw new Error(`PCO error ${res.status}: ${text}`);
-  }
-  return JSON.parse(text);
+  if (!res.ok) throw new Error(`Monday.com ${res.status}: ${text}`);
+  const json = JSON.parse(text);
+  if (json.errors) throw new Error(`Monday.com error: ${JSON.stringify(json.errors)}`);
+  return json.data;
 }
 
-async function createPerson(firstName, lastName) {
-  const res = await pcoPost('/people', {
-    data: { type: 'Person', attributes: { first_name: firstName, last_name: lastName } },
-  });
-  return res.data.id;
+async function createItem(boardId, name, columnValues) {
+  const cols = Object.fromEntries(Object.entries(columnValues).filter(([, v]) => v != null && v !== ''));
+  const mutation = `mutation {
+    create_item(
+      board_id: ${boardId},
+      item_name: ${JSON.stringify(name)},
+      column_values: ${JSON.stringify(JSON.stringify(cols))}
+    ) { id }
+  }`;
+  return mondayPost(mutation);
 }
 
-async function addEmail(personId, email) {
-  await pcoPost(`/people/${personId}/emails`, {
-    data: { type: 'Email', attributes: { address: email, location: 'Home', primary: true } },
-  });
-}
+const today = () => new Date().toISOString().split('T')[0];
 
-async function addPhone(personId, phone) {
-  if (!phone) return;
-  await pcoPost(`/people/${personId}/phone_numbers`, {
-    data: { type: 'PhoneNumber', attributes: { number: phone, location: 'Mobile' } },
-  });
-}
-
-async function addNote(personId, noteText) {
-  if (!noteText) return;
-  await pcoPost(`/people/${personId}/notes`, {
-    data: { type: 'Note', attributes: { note: noteText } },
-  });
-}
-
-// Submit to a PCO form so the submission appears in Planning Center reports.
-// Submit to a PCO form with field values inline.
-// Per the PCO OpenAPI spec, each FormSubmissionValue needs form_field_id in
-// attributes AND form_field in relationships — both referencing the same field.
-async function submitPCOForm(formId, personId) {
-  // NOTE: PCO's API 500s on any request with included FormSubmissionValues,
-  // despite their documentation saying it's supported. Submitting person_id
-  // only until PCO fixes the bug — the submission still appears in reports.
-  await pcoPost(`/forms/${formId}/form_submissions`, {
-    data: {
-      type: 'FormSubmission',
-      attributes: { person_id: personId },
-    },
-  });
-}
-
-// Add PCO form IDs and field mappings here as each form is set up in Planning Center.
-// Keys in fieldMap must match the context keys sent from the frontend.
-const PCO_FORMS = {
+// Add a board config here for each form type as Monday boards are created.
+const BOARDS = {
   visit: {
-    formId: '1130758',
-    fieldMap: {
-      // phone omitted — added to person profile via People API instead
-      visiting:     '9879601',
-      party:        '9879613',
-      neighborhood: '9879631',
-      note:         '9879642',
-    },
+    boardId: 18416392819,
+    columns: ({ email, phone, context }) => ({
+      email_mm4058vs:     { email, text: email },
+      phone_mm40rv3a:     phone ? { phone, countryShortName: 'US' } : null,
+      text_mm40znzm:      context.visiting   || '',
+      text_mm408yc:       context.party       || '',
+      text_mm4099ee:      context.neighborhood || '',
+      long_text_mm40zh3p: context.note ? { text: context.note } : null,
+      date_mm40nqpg:      { date: today() },
+    }),
   },
-  // connect, host, 'house-church', waitlist, partner — added as PCO forms are created
+  // connect, host, house-church, waitlist, partner — added as Monday boards are created
 };
 
 exports.handler = async (event) => {
@@ -101,24 +68,11 @@ exports.handler = async (event) => {
   }
 
   try {
-    const parts     = name.trim().split(/\s+/);
-    const firstName = parts[0];
-    const lastName  = parts.slice(1).join(' ') || '';
-
-    const personId = await createPerson(firstName, lastName);
-    await addEmail(personId, email);
-    await addPhone(personId, phone);
-
-    const formConfig = PCO_FORMS[formType];
-    if (formConfig) {
-      await submitPCOForm(formConfig.formId, personId);
+    const board = BOARDS[formType];
+    if (board) {
+      await createItem(board.boardId, name, board.columns({ email, phone, context }));
     } else {
-      // Fallback for unconfigured forms: store context as a note
-      const noteLines = [`Form: ${formType}`];
-      Object.entries(context).forEach(([k, v]) => {
-        if (v) noteLines.push(`${k}: ${Array.isArray(v) ? v.join(', ') : v}`);
-      });
-      await addNote(personId, noteLines.join('\n'));
+      console.log('No board configured for formType:', formType, JSON.stringify({ name, email, phone, context }));
     }
 
     return {
@@ -127,7 +81,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({ ok: true }),
     };
   } catch (err) {
-    console.error('PCO submission error:', err.message);
+    console.error('Monday.com submission error:', err.message);
     return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
   }
 };
