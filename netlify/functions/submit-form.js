@@ -10,16 +10,18 @@ function pcoAuth() {
 }
 
 async function pcoPost(path, body) {
-  const res = await fetch(`${PCO_BASE}${path}`, {
+  const url = `${PCO_BASE}${path}`;
+  const res = await fetch(url, {
     method: 'POST',
     headers: { 'Authorization': pcoAuth(), 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
+  const text = await res.text();
   if (!res.ok) {
-    const text = await res.text();
+    console.error(`PCO POST ${url} → ${res.status}: ${text}`);
     throw new Error(`PCO error ${res.status}: ${text}`);
   }
-  return res.json();
+  return JSON.parse(text);
 }
 
 async function createPerson(firstName, lastName) {
