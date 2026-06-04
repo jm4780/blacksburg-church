@@ -5,6 +5,7 @@ const NAV_LINKS = [
   { label: 'House Churches',    slug: 'house-churches' },
   { label: 'Sunday Gatherings', slug: 'gatherings' },
   { label: 'Messages',          slug: 'messages' },
+  { label: 'Partners',          slug: 'partners' },
   { label: 'Give',              slug: 'give' },
 ];
 
@@ -19,7 +20,7 @@ function Announcement({ onNav }) {
     }}>
       <span style={{ width: 6, height: 6, borderRadius: '50%', background: BC.orange, display: 'inline-block' }} />
       <span style={{ color: 'rgba(249,237,214,0.85)' }}>Sundays at 10:00am · 200 Miller St, Blacksburg</span>
-      <a href="#" onClick={(e) => { e.preventDefault(); onNav && onNav('gatherings'); }} style={{
+      <a href="#" onClick={(e) => { e.preventDefault(); onNav && onNav('connect', { mode: 'visit' }); }} style={{
         color: BC.orange, fontFamily: fontDisplay, fontWeight: 600, fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase',
         textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4,
       }}>
@@ -84,7 +85,7 @@ function Nav({ dark = false, activePage = 'home', onNav, transparent = false }) 
         padding: '8px 16px', fontSize: 12,
         background: BC.orange, color: BC.white,
       }}>
-        I'm new <ArrowRight size={12} color="#fff" />
+        Get connected <ArrowRight size={12} color="#fff" />
       </button>
     </nav>
   );
@@ -140,7 +141,7 @@ function MobileMenu({ onClose, activePage, onNav }) {
           border: 'none', borderRadius: 4, cursor: 'pointer',
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
         }}>
-          I'm new <ArrowRight size={14} color="#fff" />
+          Connect <ArrowRight size={14} color="#fff" />
         </button>
         <div style={{ marginTop: 16, fontFamily: fontBody, fontSize: 12, color: 'rgba(249,237,214,0.55)', textAlign: 'center', fontWeight: 300 }}>
           Sundays 10:00am · Blacksburg Public Library
@@ -159,7 +160,7 @@ function Footer({ onNav }) {
       ['Messages', 'messages'],
     ]},
     { title: 'Connect', items: [
-      ["I'm new", 'connect'],
+      ["Connect", 'connect'],
       ['Give', 'give'],
       ['Contact', 'connect'],
     ]},
@@ -179,7 +180,7 @@ function Footer({ onNav }) {
           <div>
             <img src="assets/logo-horizontal-cream-orange.png" alt="Blacksburg Church" style={{ height: 32, marginBottom: 20 }} />
             <p style={{ fontFamily: fontBody, fontSize: 14, color: 'rgba(249,237,214,0.65)', lineHeight: 1.7, maxWidth: 280, fontWeight: 300 }}>
-              One church, many house churches. Grounded in Blacksburg — equipping all people to find and follow Jesus.
+              One church, many house churches. Based in Blacksburg, Virginia — equipping all people to find and follow Jesus.
             </p>
           </div>
           {cols.map(col => (

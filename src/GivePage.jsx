@@ -1,34 +1,11 @@
 // Blacksburg Church — Give Page
+// Online giving is processed by Planning Center Online (PCO) via the
+// Church Center modal embed (script loaded in index.html <head>).
+// Update this URL if PCO ever changes the church's giving subdomain.
+const PCO_GIVING_URL = 'https://blacksburg-church-499851.churchcenter.com/giving';
+const PCO_MODAL_URL  = `${PCO_GIVING_URL}?open-in-church-center-modal=true`;
 
 function GivePage({ onNav }) {
-  const [amount, setAmount] = React.useState(100);
-  const [custom, setCustom] = React.useState('');
-  const [frequency, setFrequency] = React.useState('once');
-  const [fund, setFund] = React.useState('General');
-  const [submitted, setSubmitted] = React.useState(false);
-
-  const presetAmounts = [25, 50, 100, 250, 500];
-  const funds = ['General', 'Local outreach', 'House church hosts', 'Building fund'];
-
-  if (submitted) {
-    return (
-      <>
-        <Section bg={BC.cream} py={140}>
-          <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
-            <img src="assets/emblem-navy-orange.png" alt="" style={{ width: 72, marginBottom: 32 }} />
-            <h1 style={{ fontFamily: fontDisplay, fontSize: 56, fontWeight: 800, color: BC.navy, letterSpacing: '-0.025em', lineHeight: 1, marginBottom: 20 }}>
-              Thank you.
-            </h1>
-            <p style={{ fontFamily: fontBody, fontSize: 18, color: BC.navyMuted, lineHeight: 1.7, marginBottom: 32, fontWeight: 300 }}>
-              Your gift of <strong style={{ color: BC.navy }}>${custom || amount}</strong> to the {fund.toLowerCase()} fund was received. A receipt is on its way to your email.
-            </p>
-            <Button variant="outline" onClick={() => { setSubmitted(false); setCustom(''); }}>Give again</Button>
-          </div>
-        </Section>
-      </>
-    );
-  }
-
   return (
     <>
       <div style={{ background: BC.navy, padding: '100px 48px 88px', position: 'relative', overflow: 'hidden' }}>
@@ -36,101 +13,110 @@ function GivePage({ onNav }) {
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
           <Eyebrow>Generosity</Eyebrow>
           <h1 style={{ fontFamily: fontDisplay, fontSize: 'clamp(52px, 8vw, 108px)', fontWeight: 800, color: BC.cream, letterSpacing: '-0.03em', lineHeight: 0.98, maxWidth: 900, marginBottom: 24 }}>
-            Give <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>generously.</span>
+            Live <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>radically.</span>
           </h1>
           <p style={{ fontFamily: fontBody, fontSize: 20, color: 'rgba(249,237,214,0.8)', lineHeight: 1.6, maxWidth: 620, fontWeight: 300 }}>
-            Your giving supports house churches, local outreach, and the people who make this possible.
+            Your giving helps equip all people to find and follow Jesus in Blacksburg and beyond.
           </p>
         </div>
       </div>
 
       <Section bg={BC.white} py={100}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 72, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.1fr', gap: 80, alignItems: 'center' }}>
           <div>
-            <Eyebrow>Where it goes</Eyebrow>
-            <h2 style={{ fontFamily: fontDisplay, fontSize: 40, fontWeight: 800, color: BC.navy, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 28 }}>
-              Simple math,<br/>honest work.
+            <Eyebrow>As a church</Eyebrow>
+            <h2 style={{ fontFamily: fontDisplay, fontSize: 40, fontWeight: 800, color: BC.navy, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 24 }} data-comment-anchor="give-commitments-heading">
+              We Practice Radical<br/>Generosity.
             </h2>
-            <div style={{ marginBottom: 28 }}>
-              {[
-                { pct: 40, label: 'Staff + teaching' },
-                { pct: 25, label: 'House church support' },
-                { pct: 20, label: 'Local outreach' },
-                { pct: 10, label: 'Space + overhead' },
-                { pct: 5,  label: 'Savings + contingency' },
-              ].map(b => (
-                <div key={b.label} style={{ marginBottom: 14 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <div style={{ fontFamily: fontDisplay, fontSize: 13, fontWeight: 600, color: BC.navy }}>{b.label}</div>
-                    <div style={{ fontFamily: fontDisplay, fontSize: 13, fontWeight: 700, color: BC.orange }}>{b.pct}%</div>
+            <p style={{ fontFamily: fontBody, fontSize: 16, color: BC.navyMuted, lineHeight: 1.65, fontWeight: 300, marginBottom: 32, maxWidth: 480 }}>
+              Radical generosity isn't just for the individuals who make up Blacksburg Church — it's something we do collectively, as a church. Two commitments are already in place:
+            </p>
+            {[
+              {
+                pct: '10%',
+                title: 'Ministry partners.',
+                body: 'The first 10% — before salaries, before space, before anything else — goes to ministries meeting needs in Jesus\u2019 name beyond our walls.',
+              },
+              {
+                pct: '10%',
+                title: 'Church planting.',
+                body: 'On top of what goes to our ministry partners, an additional 10% is dedicated to planting new churches across the region.',
+              },
+            ].map((c, i) => (
+              <div key={i} style={{
+                paddingTop: 24, paddingBottom: 24,
+                borderTop: i === 0 ? `1px solid ${BC.border}` : 'none',
+                borderBottom: `1px solid ${BC.border}`,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 18, marginBottom: 10, flexWrap: 'wrap' }}>
+                  <div style={{ fontFamily: fontDisplay, fontSize: 28, fontWeight: 800, color: BC.orange, letterSpacing: '-0.02em', lineHeight: 1 }}>
+                    {c.pct}
                   </div>
-                  <div style={{ height: 6, background: BC.creamSubtle, borderRadius: 3 }}>
-                    <div style={{ height: '100%', width: `${b.pct * 2}%`, background: BC.orange, borderRadius: 3 }} />
+                  <div style={{ fontFamily: fontDisplay, fontSize: 22, fontWeight: 700, color: BC.navy, letterSpacing: '-0.01em', lineHeight: 1 }}>
+                    {c.title}
                   </div>
                 </div>
-              ))}
-            </div>
-            <p style={{ fontFamily: fontBody, fontSize: 14, color: BC.navyMuted, lineHeight: 1.7, fontWeight: 300 }}>
-              We publish a full budget annually. Ask for it — we'll send it.
-            </p>
+                <p style={{ fontFamily: fontBody, fontSize: 14, color: BC.navyMuted, lineHeight: 1.65, fontWeight: 300, margin: 0, maxWidth: 520 }}>
+                  {c.body}
+                </p>
+              </div>
+            ))}
           </div>
 
-          <div style={{ background: BC.creamSubtle, border: `1px solid ${BC.border}`, borderRadius: 4, padding: 40 }}>
-            <div style={{ fontFamily: fontDisplay, fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: BC.orange, marginBottom: 18 }}>
-              Give online
-            </div>
+          <div style={{
+            background: BC.navy, borderRadius: 8, padding: '56px 48px',
+            position: 'relative', overflow: 'hidden',
+          }}>
+            <img src={TOPO.navyOrange} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.22 }} />
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <div style={{ fontFamily: fontDisplay, fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: BC.orange, marginBottom: 18 }}>
+                Give online
+              </div>
+              <h3 style={{ fontFamily: fontDisplay, fontSize: 36, fontWeight: 800, color: BC.cream, letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: 18 }}>
+                Generosity<br/>starts here.
+              </h3>
+              <p style={{ fontFamily: fontBody, fontSize: 16, color: 'rgba(249,237,214,0.78)', lineHeight: 1.65, fontWeight: 300, marginBottom: 32 }}>
+                Every gift — whatever the size, however often — helps people find and follow Jesus in Blacksburg and beyond.
+              </p>
 
-            <div style={{ display: 'flex', gap: 4, background: BC.white, padding: 4, borderRadius: 4, marginBottom: 24, border: `1px solid ${BC.border}` }}>
-              {[['once','One-time'],['monthly','Monthly'],['weekly','Weekly']].map(([k,l]) => (
-                <button key={k} onClick={() => setFrequency(k)} style={{
-                  flex: 1, padding: '10px 12px', border: 'none', cursor: 'pointer',
-                  background: frequency === k ? BC.navy : 'transparent',
-                  color: frequency === k ? BC.cream : BC.navy,
-                  fontFamily: fontDisplay, fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', borderRadius: 3,
-                }}>{l}</button>
-              ))}
-            </div>
+              <a
+                href={PCO_MODAL_URL}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 12,
+                  background: BC.orange, color: BC.cream,
+                  padding: '18px 32px', borderRadius: 4,
+                  fontFamily: fontDisplay, fontSize: 14, fontWeight: 700,
+                  letterSpacing: '0.12em', textTransform: 'uppercase',
+                  textDecoration: 'none',
+                }}
+              >
+                Give Now <ArrowRight color={BC.cream} />
+              </a>
 
-            <div style={{ fontFamily: fontDisplay, fontSize: 10, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: BC.muted, marginBottom: 10 }}>Amount</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 8, marginBottom: 12 }}>
-              {presetAmounts.map(a => (
-                <button key={a} onClick={() => { setAmount(a); setCustom(''); }} style={{
-                  padding: '14px 8px', borderRadius: 4, cursor: 'pointer',
-                  background: amount === a && !custom ? BC.navy : BC.white,
-                  color: amount === a && !custom ? BC.cream : BC.navy,
-                  border: `1.5px solid ${amount === a && !custom ? BC.navy : BC.border}`,
-                  fontFamily: fontDisplay, fontSize: 15, fontWeight: 700,
-                }}>${a}</button>
-              ))}
-            </div>
-            <div style={{ position: 'relative', marginBottom: 24 }}>
-              <span style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', fontFamily: fontDisplay, fontSize: 16, color: BC.muted, fontWeight: 600 }}>$</span>
-              <input
-                value={custom} onChange={e => setCustom(e.target.value.replace(/[^0-9]/g, ''))}
-                placeholder="Custom amount"
-                style={{ width: '100%', padding: '14px 14px 14px 28px', fontFamily: fontDisplay, fontSize: 15, fontWeight: 600, color: BC.navy, border: `1.5px solid ${custom ? BC.navy : BC.border}`, borderRadius: 4, outline: 'none', background: BC.white }}
-              />
-            </div>
+              <div style={{
+                marginTop: 36, paddingTop: 24, borderTop: '1px solid rgba(249,237,214,0.15)',
+              }}>
+                <div style={{
+                  fontFamily: fontDisplay, fontSize: 11, fontWeight: 600,
+                  letterSpacing: '0.12em', textTransform: 'uppercase',
+                  color: BC.orange, marginBottom: 8,
+                }}>
+                  Give by check
+                </div>
+                <p style={{
+                  fontFamily: fontBody, fontSize: 14, fontWeight: 300,
+                  color: 'rgba(249,237,214,0.85)', lineHeight: 1.6,
+                }}>
+                  Make payable to <span style={{ color: BC.cream, fontWeight: 600 }}>Blacksburg Church</span><br/>
+                  125 North Main Street, Ste 500-118<br/>
+                  Blacksburg, VA 24060
+                </p>
+              </div>
 
-            <div style={{ fontFamily: fontDisplay, fontSize: 10, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: BC.muted, marginBottom: 10 }}>Fund</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8, marginBottom: 28 }}>
-              {funds.map(f => (
-                <button key={f} onClick={() => setFund(f)} style={{
-                  padding: '12px 14px', borderRadius: 4, cursor: 'pointer',
-                  background: fund === f ? BC.navy : BC.white,
-                  color: fund === f ? BC.cream : BC.navy,
-                  border: `1.5px solid ${fund === f ? BC.navy : BC.border}`,
-                  fontFamily: fontDisplay, fontSize: 12, fontWeight: 600, textAlign: 'left',
-                }}>{f}</button>
-              ))}
+              <p style={{ fontFamily: fontBody, fontSize: 12, color: 'rgba(249,237,214,0.5)', marginTop: 28, lineHeight: 1.6 }}>
+                Secured by Planning Center. Tax-deductible. Receipt sent by email.
+              </p>
             </div>
-
-            <Button variant="primary" size="lg" style={{ width: '100%', justifyContent: 'center' }} onClick={() => setSubmitted(true)}>
-              Give ${custom || amount} {frequency !== 'once' ? frequency : ''} <ArrowRight color="#fff" />
-            </Button>
-            <p style={{ fontFamily: fontBody, fontSize: 12, color: BC.muted, marginTop: 14, textAlign: 'center', lineHeight: 1.6 }}>
-              Secure. Tax-deductible. You can also give by check or set up a recurring bank transfer.
-            </p>
           </div>
         </div>
       </Section>

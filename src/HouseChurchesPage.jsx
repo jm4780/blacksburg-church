@@ -34,7 +34,16 @@ function FilterPill({ label, active, onClick }) {
   );
 }
 
-function HouseChurchCard({ hc, selected, onSelect, onConnect }) {
+function HouseChurchCard({ hc, selected, onSelect }) {
+  const [signupOpen, setSignupOpen] = React.useState(false);
+  const [signupData, setSignupData] = React.useState({ name: '', email: '', phone: '' });
+  const [signupSent, setSignupSent] = React.useState(false);
+  const canSubmit = signupData.name && signupData.email && signupData.phone;
+
+  React.useEffect(() => {
+    if (!selected) { setSignupOpen(false); setSignupSent(false); }
+  }, [selected]);
+
   return (
     <div
       onClick={() => onSelect && onSelect(hc.num)}
@@ -61,14 +70,162 @@ function HouseChurchCard({ hc, selected, onSelect, onConnect }) {
           <div style={{ fontFamily: fontDisplay, fontSize: 9, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: BC.muted }}>When</div>
           <div style={{ fontFamily: fontDisplay, fontSize: 14, fontWeight: 700, color: BC.navy }}>{hc.day} · {hc.time}</div>
         </div>
-        {selected && (
+        {selected && !signupOpen && (
           <div style={{ marginTop: 18, paddingTop: 18, borderTop: `1px solid ${BC.border}` }}>
-            <Button variant="primary" size="sm" onClick={(e) => { e.stopPropagation(); onConnect && onConnect(); }}>
-              Request to join N° {hc.num} <ArrowRight color="#fff" />
+            <Button variant="primary" size="sm" onClick={(e) => { e.stopPropagation(); setSignupOpen(true); }}>
+              Connect me <ArrowRight color="#fff" />
             </Button>
           </div>
         )}
+        {selected && signupOpen && !signupSent && (
+          <div onClick={(e) => e.stopPropagation()} style={{ marginTop: 18, paddingTop: 18, borderTop: `1px solid ${BC.border}` }}>
+            <p style={{ fontFamily: fontBody, fontSize: 14, color: BC.navyMuted, lineHeight: 1.55, fontWeight: 300, marginBottom: 16 }}>
+              We can't wait to meet you! Once you submit your info, we'll let the house church pastor know, and they'll be in contact to invite you to the next gathering.
+            </p>
+            <div style={{ display: 'grid', gap: 10 }}>
+              {[
+                { label: 'Your name', key: 'name', placeholder: 'Jordan Smith' },
+                { label: 'Email', key: 'email', placeholder: 'jordan@example.com' },
+                { label: 'Phone', key: 'phone', placeholder: '(540) 555-1234' },
+              ].map(f => (
+                <div key={f.key}>
+                  <label style={{ fontFamily: fontDisplay, fontSize: 10, fontWeight: 600, color: BC.navy, letterSpacing: '0.1em', textTransform: 'uppercase', display: 'block', marginBottom: 5 }}>{f.label}</label>
+                  <input
+                    value={signupData[f.key]}
+                    onChange={e => setSignupData(d => ({ ...d, [f.key]: e.target.value }))}
+                    placeholder={f.placeholder}
+                    style={{ fontFamily: fontBody, fontSize: 14, color: BC.navy, background: BC.white, border: `1.5px solid ${BC.border}`, borderRadius: 4, padding: '10px 12px', width: '100%', outline: 'none', boxSizing: 'border-box' }}
+                    onFocus={e => e.target.style.borderColor = BC.navy}
+                    onBlur={e => e.target.style.borderColor = BC.border}
+                  />
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+              <button
+                onClick={(e) => { e.stopPropagation(); setSignupOpen(false); }}
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: fontDisplay, fontSize: 12, fontWeight: 600, color: BC.navyMuted, letterSpacing: '0.05em' }}
+              >← Back</button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={(e) => { e.stopPropagation(); if (canSubmit) setSignupSent(true); }}
+                style={{ opacity: canSubmit ? 1 : 0.4, pointerEvents: canSubmit ? 'auto' : 'none' }}
+              >
+                Submit <ArrowRight color="#fff" />
+              </Button>
+            </div>
+          </div>
+        )}
+        {selected && signupSent && (
+          <div onClick={(e) => e.stopPropagation()} style={{ marginTop: 18, paddingTop: 18, borderTop: `1px solid ${BC.border}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+              <div style={{ width: 32, height: 32, borderRadius: '50%', background: BC.orange, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 10l4 4 10-10" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <div style={{ fontFamily: fontDisplay, fontSize: 18, fontWeight: 800, color: BC.navy, letterSpacing: '-0.01em' }}>You're in.</div>
+            </div>
+            <p style={{ fontFamily: fontBody, fontSize: 14, color: BC.navyMuted, lineHeight: 1.55, fontWeight: 300, margin: 0 }}>
+              The house church pastor will be in touch soon.
+            </p>
+          </div>
+        )}
       </div>
+    </div>
+  );
+}
+
+function WaitlistCard({ hc }) {
+  const [open, setOpen] = React.useState(false);
+  const [data, setData] = React.useState({ name: '', email: '' });
+  const [sent, setSent] = React.useState(false);
+  const canSubmit = data.name.trim().length > 0 && data.email.trim().includes('@');
+
+  return (
+    <div style={{
+      background: 'rgba(249,237,214,0.06)', border: '1px dashed rgba(249,237,214,0.35)', borderRadius: 4,
+      padding: '24px 22px', display: 'flex', flexDirection: 'column', gap: 8,
+      minHeight: 180, backdropFilter: 'blur(2px)',
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontFamily: fontDisplay, fontSize: 22, fontWeight: 700, color: BC.cream, letterSpacing: '-0.01em', lineHeight: 1.15 }}>
+            {hc.name}
+          </div>
+          <div style={{ fontFamily: fontBody, fontSize: 13, color: 'rgba(249,237,214,0.7)', fontWeight: 300, marginTop: 4 }}>
+            {hc.town}
+          </div>
+        </div>
+        <div style={{ fontFamily: fontDisplay, fontSize: 9, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: BC.cream, background: 'rgba(249,237,214,0.12)', padding: '3px 8px', borderRadius: 2, flexShrink: 0, marginTop: 4 }}>
+          {hc.launch}
+        </div>
+      </div>
+      {!open && !sent && (
+        <div style={{ marginTop: 'auto', paddingTop: 12, borderTop: '1px solid rgba(249,237,214,0.15)' }}>
+          <button
+            onClick={() => setOpen(true)}
+            style={{
+              background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+              fontFamily: fontDisplay, fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
+              color: BC.orange, display: 'flex', alignItems: 'center', gap: 8,
+            }}
+          >
+            Get on the list <ArrowRight color={BC.orange} size={12} />
+          </button>
+        </div>
+      )}
+      {open && !sent && (
+        <div style={{ marginTop: 14, paddingTop: 14, borderTop: '1px solid rgba(249,237,214,0.15)' }}>
+          <p style={{ fontFamily: fontBody, fontSize: 13, color: 'rgba(249,237,214,0.8)', lineHeight: 1.55, fontWeight: 300, marginBottom: 14 }}>
+            We'll email you the moment a house church launches in {hc.name}.
+          </p>
+          <div style={{ display: 'grid', gap: 10 }}>
+            {[
+              { label: 'Your name', key: 'name', placeholder: 'Jordan Smith' },
+              { label: 'Email', key: 'email', placeholder: 'jordan@example.com' },
+            ].map(f => (
+              <div key={f.key}>
+                <label style={{ fontFamily: fontDisplay, fontSize: 10, fontWeight: 600, color: BC.cream, letterSpacing: '0.1em', textTransform: 'uppercase', display: 'block', marginBottom: 5 }}>{f.label}</label>
+                <input
+                  value={data[f.key]}
+                  onChange={e => setData(d => ({ ...d, [f.key]: e.target.value }))}
+                  placeholder={f.placeholder}
+                  style={{ fontFamily: fontBody, fontSize: 14, color: BC.cream, background: 'rgba(15,34,51,0.5)', border: '1.5px solid rgba(249,237,214,0.25)', borderRadius: 4, padding: '10px 12px', width: '100%', outline: 'none', boxSizing: 'border-box' }}
+                  onFocus={e => e.target.style.borderColor = BC.orange}
+                  onBlur={e => e.target.style.borderColor = 'rgba(249,237,214,0.25)'}
+                />
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+            <button
+              onClick={() => setOpen(false)}
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: fontDisplay, fontSize: 12, fontWeight: 600, color: 'rgba(249,237,214,0.7)', letterSpacing: '0.05em' }}
+            >← Back</button>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => { if (canSubmit) setSent(true); }}
+              style={{ opacity: canSubmit ? 1 : 0.4, pointerEvents: canSubmit ? 'auto' : 'none' }}
+            >
+              Join list <ArrowRight color="#fff" />
+            </Button>
+          </div>
+        </div>
+      )}
+      {sent && (
+        <div style={{ marginTop: 'auto', paddingTop: 14, borderTop: '1px solid rgba(249,237,214,0.15)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+            <div style={{ width: 28, height: 28, borderRadius: '50%', background: BC.orange, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <svg width="14" height="14" viewBox="0 0 20 20" fill="none"><path d="M3 10l4 4 10-10" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+            <div style={{ fontFamily: fontDisplay, fontSize: 16, fontWeight: 800, color: BC.cream, letterSpacing: '-0.01em' }}>You're on the list.</div>
+          </div>
+          <p style={{ fontFamily: fontBody, fontSize: 13, color: 'rgba(249,237,214,0.75)', lineHeight: 1.55, fontWeight: 300, margin: 0 }}>
+            We'll be in touch the moment {hc.name} launches.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
@@ -192,9 +349,6 @@ function MapView({ filtered, launching, selected, setSelected }) {
       </div>
 
       {/* Region label */}
-      <div style={{ position: 'absolute', left: 16, top: 16, fontFamily: fontDisplay, fontSize: 10, color: 'rgba(249,237,214,0.7)', letterSpacing: '0.2em', textTransform: 'uppercase', background: 'rgba(15,34,51,0.6)', padding: '6px 10px', borderRadius: 4, backdropFilter: 'blur(6px)' }}>
-        New River Valley
-      </div>
     </div>
   );
 }
@@ -220,48 +374,95 @@ function HouseChurchesPage({ onNav }) {
             One church,<br/><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange, whiteSpace: 'nowrap' }}>many house churches.</span>
           </h1>
           <p style={{ fontFamily: fontBody, fontSize: 20, color: 'rgba(249,237,214,0.8)', lineHeight: 1.6, maxWidth: 680, fontWeight: 300 }}>
-            We meet in house churches weekly, where every person can be personally known and pastored. House church is designed around five things: a meal, scripture, prayer, relationships, and real-life discipleship. Everyone's welcome — whether you're curious, skeptical, somewhere in between, or have been following Jesus for years.
+            We meet in house churches each week so every person can be personally known and pastored.
           </p>
         </div>
       </div>
 
-      {/* FINDER */}
-      <section style={{ background: BC.creamSubtle, padding: '48px 48px 100px' }}>
+      {/* WHEN WE GATHER — three things, plainly */}
+      <section style={{ background: BC.white, padding: '88px 48px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          {/* Join prompt */}
-          <div style={{ marginBottom: 40 }}>
-            <Eyebrow>Ready to give it a shot?</Eyebrow>
-            <h2 style={{ fontFamily: fontDisplay, fontSize: 38, fontWeight: 800, color: BC.navy, letterSpacing: '-0.025em', lineHeight: 1.08, marginTop: 10, marginBottom: 28, maxWidth: 720 }}>
-              Three steps to your first gathering.
+          <div style={{ marginBottom: 64, maxWidth: 760 }}>
+            <Eyebrow>Inside a house church</Eyebrow>
+            <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(40px, 5vw, 56px)', fontWeight: 800, color: BC.navy, letterSpacing: '-0.025em', lineHeight: 1.0, marginTop: 10, marginBottom: 24 }}>
+              A place to know,<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>and be known.</span>
             </h2>
-            <ol style={{
-              listStyle: 'none', padding: 0, margin: 0,
-              display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0,
-              borderTop: `1px solid ${BC.border}`,
-            }}>
+            <p style={{ fontFamily: fontBody, fontSize: 17, color: BC.navyMuted, lineHeight: 1.65, fontWeight: 300, margin: 0 }}>
+              House churches are how we care for one another and grow together. They&rsquo;re the people who know you by name, who bring meals after a new baby, show up on moving day, sit with you in the hospital, and stand with you at the funeral. Whether you&rsquo;ve followed Jesus your whole life, are exploring faith for the first time, or somewhere in between, everyone needs this kind of community.
+            </p>
+          </div>
+
+          {/* Three pillars on a dashed line */}
+          <div style={{ position: 'relative' }}>
+            <div style={{ position: 'absolute', top: 7, left: 0, right: 0, borderTop: `1px dashed ${BC.navyMuted}`, opacity: 0.35 }} />
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0 }}>
               {[
-                'Use the map below to identify the house church closest to where you live.',
-                'Select it from the options on the right and fill out the form.',
-                "You'll be contacted by the house church pastor and invited to the next gathering.",
-              ].map((text, i) => (
-                <li
-                  key={i}
-                  style={{
-                    padding: '22px 28px 22px 0',
-                    borderRight: i < 2 ? `1px solid ${BC.border}` : 'none',
-                    paddingLeft: i > 0 ? 28 : 0,
-                  }}
-                >
-                  <div style={{
-                    fontFamily: fontDisplay, fontSize: 10, fontWeight: 600,
-                    letterSpacing: '0.22em', color: BC.orange, marginBottom: 10,
-                  }}>STEP 0{i + 1}</div>
-                  <div style={{ fontFamily: fontBody, fontSize: 15, color: BC.navy, fontWeight: 400, lineHeight: 1.55 }}>
-                    {text}
+                { roman: 'I',   label: 'A meal together',             body: "We share a meal every week\u2014whatever the host is cooking, plus whatever others bring. It's unhurried and easy. You catch up on the week, meet the people sitting next to you, and there's always a seat saved for someone new. If it's your first time, you don't need to bring anything\u2014just come." },
+                { roman: 'II',  label: 'A discussion in Scripture',   body: "We open the Bible together and talk through that week's passage\u2014usually the same one preached on Sunday. The discussion is about the passage itself, not the sermon, so anyone can ask questions, share what stood out, or just listen. You don't need to know the Bible well or to have been at Sunday's gathering\u2014bring your questions and your curiosity." },
+                { roman: 'III', label: 'Prayer for one another',      body: "We close the night by praying for each other. People share what's actually going on\u2014burdens, hopes, decisions, things they're wrestling with\u2014and the group prays for them right there. If praying out loud isn't familiar to you, no one will put you on the spot. You're invited to share whenever you're ready." },
+              ].map((m, i) => {
+                const isFirst = i === 0;
+                const isLast = i === 2;
+                return (
+                  <div
+                    key={m.roman}
+                    style={{
+                      position: 'relative',
+                      paddingTop: 36,
+                      paddingLeft: isFirst ? 0 : 40,
+                      paddingRight: isLast ? 0 : 40,
+                      borderRight: !isLast ? `1px solid ${BC.border}` : 'none',
+                    }}
+                  >
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: isFirst ? 0 : 40,
+                      width: 14, height: 14, borderRadius: '50%',
+                      background: BC.orange,
+                      boxShadow: `0 0 0 4px ${BC.white}`,
+                    }} />
+                    <div style={{
+                      fontFamily: fontDisplay, fontSize: 11, fontWeight: 700,
+                      color: BC.orange, letterSpacing: '0.28em', marginBottom: 14,
+                    }}>
+                      {m.roman}
+                    </div>
+                    <h3 style={{
+                      fontFamily: fontDisplay, fontSize: 26, fontWeight: 700,
+                      color: BC.navy, letterSpacing: '-0.015em', lineHeight: 1.15,
+                      marginBottom: 16, marginTop: 0,
+                    }}>
+                      {m.label}
+                    </h3>
+                    <p style={{
+                      fontFamily: fontBody, fontSize: 16, color: BC.navyMuted,
+                      lineHeight: 1.7, fontWeight: 300, margin: 0,
+                    }}>
+                      {m.body}
+                    </p>
                   </div>
-                </li>
-              ))}
-            </ol>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FINDER */}
+      <section style={{ background: BC.creamSubtle, padding: '48px 48px 100px', position: 'relative', overflow: 'hidden' }}>
+        <img src={TOPO.cream} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35, pointerEvents: 'none' }} />
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
+          {/* Join prompt */}
+          <div style={{ marginBottom: 56, textAlign: 'center', maxWidth: 680, marginLeft: 'auto', marginRight: 'auto' }}>
+            <Eyebrow style={{ justifyContent: 'center' }}>Ready to give it a shot?</Eyebrow>
+            <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(38px, 5vw, 56px)', fontWeight: 800, color: BC.navy, letterSpacing: '-0.03em', lineHeight: 1.0, marginTop: 10, marginBottom: 20 }}>
+              Find yours below.
+            </h2>
+            <p style={{ fontFamily: fontBody, fontSize: 17, color: BC.navyMuted, lineHeight: 1.65, fontWeight: 300, margin: 0 }}>
+              Pick the house church closest to where you live below and fill out the short form. From there, the house church pastor will reach out personally to invite you to the next gathering.
+            </p>
           </div>
 
           {/* Content */}
@@ -271,59 +472,36 @@ function HouseChurchesPage({ onNav }) {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {filtered.map(hc => (
-                <HouseChurchCard key={hc.num} hc={hc} selected={selected === hc.num} onSelect={setSelected} onConnect={() => onNav && onNav('connect')} />
+                <HouseChurchCard key={hc.num} hc={hc} selected={selected === hc.num} onSelect={setSelected} />
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* LAUNCHING SOON */}
-      <section style={{ background: BC.cream, padding: '100px 48px', position: 'relative', overflow: 'hidden' }}>
-        <img src={TOPO.creamOrange} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35, pointerEvents: 'none' }} />
+      {/* FUTURE LOCATIONS */}
+      <section id="future-locations" style={{ background: BC.navy, padding: '100px 48px', position: 'relative', overflow: 'hidden', scrollMarginTop: 80 }}>
+        <div style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: `url(${TOPO.navy})`,
+          backgroundSize: '1600px auto',
+          backgroundPosition: 'center top',
+          backgroundRepeat: 'repeat-y',
+          opacity: 0.4, pointerEvents: 'none',
+        }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ marginBottom: 48 }}>
-            <Eyebrow>Launching Soon</Eyebrow>
-            <h2 style={{ fontFamily: fontDisplay, fontSize: 52, fontWeight: 800, color: BC.navy, letterSpacing: '-0.025em', lineHeight: 1.05, maxWidth: 600 }}>
+            <Eyebrow>Future Locations</Eyebrow>
+            <h2 style={{ fontFamily: fontDisplay, fontSize: 52, fontWeight: 800, color: BC.cream, letterSpacing: '-0.025em', lineHeight: 1.05, maxWidth: 600 }}>
               What's next.
             </h2>
-            <p style={{ fontFamily: fontBody, fontSize: 17, color: BC.navyMuted, lineHeight: 1.7, marginTop: 16, maxWidth: 540, fontWeight: 300 }}>
+            <p style={{ fontFamily: fontBody, fontSize: 17, color: 'rgba(249,237,214,0.8)', lineHeight: 1.7, marginTop: 16, maxWidth: 540, fontWeight: 300 }}>
               Here are some of the places we're praying will have a house church soon. Join the email list to be the first to know when a house church is launching in that area.
             </p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16, alignItems: 'start' }}>
             {LAUNCHING_SOON.map(hc => (
-              <div key={hc.num} style={{
-                background: BC.white, border: `1px dashed ${BC.navyMuted}`, borderRadius: 4,
-                padding: '24px 22px', display: 'flex', flexDirection: 'column', gap: 8,
-                minHeight: 180,
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontFamily: fontDisplay, fontSize: 22, fontWeight: 700, color: BC.navy, letterSpacing: '-0.01em', lineHeight: 1.15 }}>
-                      {hc.name}
-                    </div>
-                    <div style={{ fontFamily: fontBody, fontSize: 13, color: BC.navyMuted, fontWeight: 300, marginTop: 4 }}>
-                      {hc.town}
-                    </div>
-                  </div>
-                  <div style={{ fontFamily: fontDisplay, fontSize: 9, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: BC.navyMuted, background: BC.creamSubtle, padding: '3px 8px', borderRadius: 2, flexShrink: 0, marginTop: 4 }}>
-                    {hc.launch}
-                  </div>
-                </div>
-                <div style={{ marginTop: 'auto', paddingTop: 12, borderTop: `1px solid ${BC.border}` }}>
-                  <button
-                    onClick={() => onNav && onNav('connect')}
-                    style={{
-                      background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                      fontFamily: fontDisplay, fontSize: 12, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
-                      color: BC.orange, display: 'flex', alignItems: 'center', gap: 8,
-                    }}
-                  >
-                    Get on the list <ArrowRight color={BC.orange} size={12} />
-                  </button>
-                </div>
-              </div>
+              <WaitlistCard key={hc.num} hc={hc} />
             ))}
           </div>
         </div>
@@ -339,11 +517,31 @@ function HouseChurchesPage({ onNav }) {
           <p style={{ fontFamily: fontBody, fontSize: 18, color: BC.navyMuted, lineHeight: 1.7, marginBottom: 32, fontWeight: 300 }}>
             Every house church begins where someone is willing to open their home. If you believe hospitality is a gift that you've been given and you live somewhere in the region, we'd love to talk.
           </p>
-          <Button variant="primary" size="lg" onClick={() => onNav && onNav('connect')}>
+          <Button variant="primary" size="lg" onClick={() => onNav && onNav('host')}>
             Talk to us about hosting <ArrowRight color="#fff" />
           </Button>
         </div>
       </section>
+
+      {/* FAQ */}
+      <section style={{ background: BC.creamSubtle, padding: '120px 48px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+          <Eyebrow>Common questions</Eyebrow>
+          <h2 style={{ fontFamily: fontDisplay, fontSize: 48, fontWeight: 800, color: BC.navy, letterSpacing: '-0.025em', lineHeight: 1.05, marginBottom: 56 }}>
+            A few things<br />people ask.
+          </h2>
+          <FAQList items={[
+            { q: 'Is this just a small group or a Bible study?', a: "No \u2014 there\u2019s a real difference. A small group or Bible study is usually one slice of church life: a handful of people meeting around a topic or a book, often connected to a larger Sunday service that does the rest. A house church is the church. We worship, pray, study Scripture, take communion, eat together, care for one another, and live on mission as a body. The Sunday gathering and the house church are two halves of the same thing, not a service plus an add-on." },
+            { q: 'What actually happens at a house church?', a: 'A shared meal, worship, time in Scripture together, prayer, and real conversation about life. Sometimes communion. Always space to ask questions. It\u2019s closer to a family dinner than a service.' },
+            { q: 'Do I need to believe in anything to come?', a: 'Nope. You\u2019re welcome whether you\u2019re a lifelong Christian, totally skeptical, or somewhere in between. Bring your questions \u2014 house church is a great place for them.' },
+            { q: 'Do I need to bring anything?', a: 'Just yourself. If the host is doing a meal and you\u2019re able, bringing a dish or drink to share is always appreciated \u2014 but never required.' },
+            { q: 'What about my kids?', a: 'Kids are part of it. They\u2019re welcome in the gathering with you. Each house church handles kids a little differently depending on who\u2019s there \u2014 the host can fill you in.' },
+            { q: 'Do I have to commit to anything?', a: 'No. Come check it out. If it\u2019s a fit, keep coming. If it\u2019s not, no pressure either way.' },
+            { q: 'How is this different from Sunday gatherings?', a: 'Sunday is the whole church together \u2014 worship, teaching, communion. House church is the same family in a smaller setting where you can actually be known. We do both, every week.' },
+          ]} />
+        </div>
+      </section>
+
     </>
   );
 }

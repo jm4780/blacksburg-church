@@ -6,7 +6,7 @@ function HeroTopo({ onNav }) {
     <div data-bc-hero style={{ position: 'relative', background: BC.navyDark, overflow: 'hidden', minHeight: 'calc(100vh - 72px)', display: 'flex', alignItems: 'center' }}>
       <img src={TOPO.navyOrange} alt="" style={{
         position: 'absolute', inset: 0, width: '100%', height: '100%',
-        objectFit: 'cover', opacity: 0.65,
+        objectFit: 'cover', opacity: 0.4,
       }} />
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(15,34,51,0.2) 0%, rgba(15,34,51,0.7) 100%)' }} />
 
@@ -16,18 +16,12 @@ function HeroTopo({ onNav }) {
           <h1 data-bc-h1-xl style={{
             fontFamily: fontDisplay, fontSize: 'clamp(48px, 7vw, 96px)', fontWeight: 800,
             color: BC.cream, lineHeight: 0.98, letterSpacing: '-0.035em',
-            marginBottom: 28,
+            marginBottom: 48,
           }}>
             A community to<br/>
             <span style={{ fontStyle: 'italic', fontWeight: 400, color: BC.orange, whiteSpace: 'nowrap' }}>find &amp; follow</span><br/>
             Jesus.
           </h1>
-          <p data-bc-lead style={{
-            fontFamily: fontBody, fontSize: 20, color: 'rgba(249,237,214,0.8)',
-            lineHeight: 1.6, maxWidth: 560, marginBottom: 44, fontWeight: 300,
-          }}>
-            We're a church of house churches in the New River Valley — real people meeting in real homes, exploring what it means to follow Jesus together.
-          </p>
           <div data-bc-btnrow style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
             <Button variant="onDark" size="xl" onClick={() => onNav && onNav('house-churches')}>
               Find a house church <ArrowRight color="#fff" />
@@ -182,10 +176,10 @@ function AboutPreview({ onNav }) {
     <Section bg={BC.white} py={120}>
       <div data-bc-grid-split style={{ display: 'grid', gridTemplateColumns: '1fr 1.1fr', gap: 80, alignItems: 'center' }}>
         <Reveal>
-          <div data-bc-aspect-4-5 style={{ position: 'relative', aspectRatio: '4/5', borderRadius: 4, overflow: 'hidden', background: BC.navy }}>
+          <div data-bc-aspect-4-5 style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 4, overflow: 'hidden', background: BC.navy }}>
             <img
-              src="assets/house-church-plum-creek.jpg"
-              alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              src="assets/house-church-nellies-cave.jpg"
+              alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '28% center' }}
             />
             <div style={{
               position: 'absolute', left: 24, bottom: 24, zIndex: 2,
@@ -193,7 +187,7 @@ function AboutPreview({ onNav }) {
               letterSpacing: '0.2em', textTransform: 'uppercase',
               textShadow: '0 2px 12px rgba(0,0,0,0.6)',
             }}>
-              House Church N° 01 · Plum Creek
+              House Church N° 02 · Nellie’s Cave
             </div>
           </div>
         </Reveal>
@@ -215,6 +209,46 @@ function AboutPreview({ onNav }) {
         </Reveal>
       </div>
     </Section>
+  );
+}
+
+// ── FUTURE NEIGHBORHOODS card ──────────────────
+// Sends people to the House Churches page so they can pick a specific
+// neighborhood waitlist there (we don't want a generic catch-all here).
+function FutureNeighborhoodsCard({ onNav }) {
+  return (
+    <div
+      onClick={() => onNav && onNav('house-churches', { anchor: 'future-locations' })}
+      style={{
+        background: 'transparent', border: `1px dashed ${BC.navyMuted}`, borderRadius: 4,
+        padding: '32px 28px', cursor: 'pointer',
+        transition: 'background 200ms, transform 200ms',
+        minHeight: 280, height: '100%',
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+        boxSizing: 'border-box',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; }}
+      onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}
+    >
+      <div>
+        <div style={{ fontFamily: fontDisplay, fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', color: BC.orange, marginBottom: 28 }}>N° 03 — 06</div>
+        <div style={{ fontFamily: fontDisplay, fontSize: 24, fontWeight: 700, color: BC.navy, letterSpacing: '-0.015em', lineHeight: 1.1, marginBottom: 12, whiteSpace: 'nowrap' }}>
+          Future house churches.
+        </div>
+        <div style={{ fontFamily: fontBody, fontSize: 14, color: BC.navyMuted, fontWeight: 300, lineHeight: 1.6 }}>
+          Newport, Prices Fork, Downtown Blacksburg, Merrimac — we'd love your help.
+        </div>
+      </div>
+      <div style={{ paddingTop: 20, borderTop: `1px dashed ${BC.navyMuted}`, marginTop: 20 }}>
+        <div style={{
+          fontFamily: fontDisplay, fontSize: 12, fontWeight: 600, color: BC.navy, letterSpacing: '0.05em',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%',
+        }}>
+          <span>SEE FUTURE LOCATIONS</span>
+          <ArrowRight color={BC.orange} />
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -283,35 +317,7 @@ function HomeHouseChurches({ onNav }) {
           ))}
           {/* Launching soon placeholder card */}
           <Reveal delay={160} style={{ height: '100%' }}>
-            <div
-              onClick={() => onNav && onNav('house-churches')}
-              style={{
-                background: 'transparent', border: `1px dashed ${BC.navyMuted}`, borderRadius: 4,
-                padding: '32px 28px', cursor: 'pointer',
-                transition: 'background 200ms',
-                minHeight: 280, height: '100%',
-                display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-                boxSizing: 'border-box',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.5)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-            >
-              <div>
-                <div style={{ fontFamily: fontDisplay, fontSize: 11, fontWeight: 600, letterSpacing: '0.2em', color: BC.orange, marginBottom: 28 }}>N° 03 — 06</div>
-                <div style={{ fontFamily: fontDisplay, fontSize: 24, fontWeight: 700, color: BC.navy, letterSpacing: '-0.015em', lineHeight: 1.1, marginBottom: 12, whiteSpace: 'nowrap' }}>
-                  Future neighborhoods.
-                </div>
-                <div style={{ fontFamily: fontBody, fontSize: 14, color: BC.navyMuted, fontWeight: 300, lineHeight: 1.6 }}>
-                  Newport, Prices Fork, Downtown Blacksburg, Merrimac — we'd love your help.
-                </div>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 20, borderTop: `1px dashed ${BC.navyMuted}`, marginTop: 20 }}>
-                <div style={{ fontFamily: fontDisplay, fontSize: 12, fontWeight: 600, color: BC.navy, letterSpacing: '0.05em' }}>
-                  GET ON THE LIST
-                </div>
-                <ArrowRight color={BC.orange} />
-              </div>
-            </div>
+            <FutureNeighborhoodsCard onNav={onNav} />
           </Reveal>
         </div>
       </div>
@@ -344,7 +350,7 @@ function HomeGatherings({ onNav }) {
                 <div style={{ fontFamily: fontDisplay, fontSize: 20, fontWeight: 700, color: BC.cream, whiteSpace: 'nowrap' }}>Blacksburg Public Library</div>
               </div>
             </div>
-            <Button variant="onDark" size="lg" onClick={() => onNav && onNav('gatherings')}>
+            <Button variant="onDark" size="lg" onClick={() => onNav && onNav('connect', { mode: 'visit' })}>
               Be our guest <ArrowRight color="#fff" />
             </Button>
           </Reveal>
@@ -450,7 +456,7 @@ function HomeCTA({ onNav }) {
           <span style={{ color: BC.navy }}>Start with a conversation.</span>
         </h2>
         <Button variant="navy" size="xl" onClick={() => onNav && onNav('connect')}>
-          I'm new <ArrowRight color={BC.cream} />
+          Connect <ArrowRight color={BC.cream} />
         </Button>
       </div>
     </section>
@@ -463,7 +469,6 @@ function HomePage({ onNav, heroVariant = 'topo' }) {
   return (
     <>
       <Hero onNav={onNav} />
-      <ValuesStrip />
       <AboutPreview onNav={onNav} />
       <HomeHouseChurches onNav={onNav} />
       <HomeGatherings onNav={onNav} />

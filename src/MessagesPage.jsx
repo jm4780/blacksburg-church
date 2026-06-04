@@ -497,9 +497,8 @@ function MessagesPage({ onNav }) {
         </div>
 
         {/* Filter rows */}
-        <FilterRow label="Scripture" values={['All', ...ALL_BOOKS]} active={bookFilter} onChange={setBookFilter} />
+        <FilterRow label="Book" values={['All', ...ALL_BOOKS]} active={bookFilter} onChange={setBookFilter} />
         <FilterRow label="Topic"     values={['All', ...ALL_TOPICS]} active={topicFilter} onChange={setTopicFilter} formatter={v => v === 'All' ? v : v.replace(/-/g, ' ')} />
-        <FilterRow label="Series"    values={['All', ...SERIES_DATA.map(s => s.name)]} active={seriesFilter} onChange={setSeriesFilter} />
 
         {/* List */}
         <div style={{ marginTop: 32, background: BC.white, border: `1px solid ${BC.border}`, borderRadius: 4, overflow: 'hidden' }}>
