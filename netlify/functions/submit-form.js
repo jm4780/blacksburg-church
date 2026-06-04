@@ -120,17 +120,17 @@ exports.handler = async (event) => {
     await addEmail(personId, email);
     await addPhone(personId, phone);
 
-    // Build a note with all context so field answers are always preserved
-    const noteLines = [`Form: ${formType}`];
-    Object.entries(context).forEach(([k, v]) => {
-      if (v) noteLines.push(`${k}: ${Array.isArray(v) ? v.join(', ') : v}`);
-    });
-    await addNote(personId, noteLines.join('\n'));
-
-    // Submit to the PCO form so answers appear in reports
     const formConfig = PCO_FORMS[formType];
     if (formConfig) {
+      // Submit to PCO form — field answers appear in the form submission
       await submitPCOForm(formConfig.formId, personId, formConfig.fieldMap, context);
+    } else {
+      // Fallback for unconfigured forms: store context as a note
+      const noteLines = [`Form: ${formType}`];
+      Object.entries(context).forEach(([k, v]) => {
+        if (v) noteLines.push(`${k}: ${Array.isArray(v) ? v.join(', ') : v}`);
+      });
+      await addNote(personId, noteLines.join('\n'));
     }
 
     return {
