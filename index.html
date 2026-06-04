@@ -104,6 +104,7 @@ function App() {
       {page === 'messages'       && <MessagesPage onNav={navigate} />}
       {page === 'give'           && <GivePage onNav={navigate} />}
       {page === 'connect'        && <ConnectPage onNav={navigate} mode={pageOpts.mode || 'connect'} />}
+      {page === 'host'           && <ConnectPage onNav={navigate} mode="host" />}
       {page === 'vision'         && <VisionPage onNav={navigate} />}
       {page === 'partners'       && <PartnersPage onNav={navigate} />}
 
