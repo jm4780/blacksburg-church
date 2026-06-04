@@ -52,14 +52,29 @@ async function addNote(personId, noteText) {
 }
 
 // Submit to a PCO form so the submission appears in Planning Center reports.
-// Links a person to a PCO form submission so it shows up in form reports.
-// Field values are stored as a note instead — PCO's API 500s on included values.
-async function submitPCOForm(formId, personId, context) {
+// Submit to a PCO form with field values inline.
+// Per the PCO OpenAPI spec, each FormSubmissionValue needs form_field_id in
+// attributes AND form_field in relationships — both referencing the same field.
+async function submitPCOForm(formId, personId, fieldMap, context) {
+  const included = Object.entries(context)
+    .filter(([key, val]) => fieldMap[key] && val)
+    .map(([key, val]) => ({
+      type: 'FormSubmissionValue',
+      attributes: {
+        value: Array.isArray(val) ? val.join(', ') : val,
+        form_field_id: fieldMap[key],
+      },
+      relationships: {
+        form_field: { data: { type: 'FormField', id: fieldMap[key] } },
+      },
+    }));
+
   await pcoPost(`/forms/${formId}/form_submissions`, {
     data: {
       type: 'FormSubmission',
       attributes: { person_id: personId },
     },
+    included,
   });
 }
 
@@ -112,10 +127,10 @@ exports.handler = async (event) => {
     });
     await addNote(personId, noteLines.join('\n'));
 
-    // Link to the PCO form so submission appears in reports
+    // Submit to the PCO form so answers appear in reports
     const formConfig = PCO_FORMS[formType];
     if (formConfig) {
-      await submitPCOForm(formConfig.formId, personId, context);
+      await submitPCOForm(formConfig.formId, personId, formConfig.fieldMap, context);
     }
 
     return {
