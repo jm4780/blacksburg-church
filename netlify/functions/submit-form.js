@@ -55,29 +55,15 @@ async function addNote(personId, noteText) {
 // Submit to a PCO form with field values inline.
 // Per the PCO OpenAPI spec, each FormSubmissionValue needs form_field_id in
 // attributes AND form_field in relationships — both referencing the same field.
-async function submitPCOForm(formId, personId, fieldMap, context) {
-  const included = Object.entries(context)
-    .filter(([key, val]) => fieldMap[key] && val)
-    .map(([key, val]) => ({
-      type: 'FormSubmissionValue',
-      attributes: {
-        value: Array.isArray(val) ? val.join(', ') : val,
-        form_field_id: fieldMap[key],
-      },
-      relationships: {
-        form_field: { data: { type: 'FormField', id: fieldMap[key] } },
-      },
-    }));
-
+async function submitPCOForm(formId, personId) {
+  // NOTE: PCO's API 500s on any request with included FormSubmissionValues,
+  // despite their documentation saying it's supported. Submitting person_id
+  // only until PCO fixes the bug — the submission still appears in reports.
   await pcoPost(`/forms/${formId}/form_submissions`, {
     data: {
       type: 'FormSubmission',
       attributes: { person_id: personId },
-      relationships: {
-        person: { data: { type: 'Person', id: personId } },
-      },
     },
-    included,
   });
 }
 
@@ -125,8 +111,7 @@ exports.handler = async (event) => {
 
     const formConfig = PCO_FORMS[formType];
     if (formConfig) {
-      // Submit to PCO form — field answers appear in the form submission
-      await submitPCOForm(formConfig.formId, personId, formConfig.fieldMap, context);
+      await submitPCOForm(formConfig.formId, personId);
     } else {
       // Fallback for unconfigured forms: store context as a note
       const noteLines = [`Form: ${formType}`];
