@@ -73,6 +73,9 @@ async function submitPCOForm(formId, personId, fieldMap, context) {
     data: {
       type: 'FormSubmission',
       attributes: { person_id: personId },
+      relationships: {
+        person: { data: { type: 'Person', id: personId } },
+      },
     },
     included,
   });
