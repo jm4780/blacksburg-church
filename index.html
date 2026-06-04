@@ -69,6 +69,16 @@ function App() {
     window.scrollTo({ top: 0 });
   };
 
+  // Device detection — sets data-device on body for CSS targeting
+  React.useEffect(() => {
+    const detect = () => {
+      document.body.dataset.device = window.innerWidth < 768 ? 'mobile' : 'desktop';
+    };
+    detect();
+    window.addEventListener('resize', detect);
+    return () => window.removeEventListener('resize', detect);
+  }, []);
+
   // Tweaks handshake
   React.useEffect(() => {
     const onMsg = (e) => {
@@ -114,6 +124,7 @@ function App() {
 
   return (
     <>
+      <MobileStyles />
       {appContent}
       {editMode && <TweaksPanel tweaks={tweaks} setTweak={setTweak} />}
     </>

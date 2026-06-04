@@ -32,11 +32,15 @@ function Announcement({ onNav }) {
 
 function Nav({ dark = false, activePage = 'home', onNav, transparent = false }) {
   const [scrolled, setScrolled] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
   React.useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20);
     h(); window.addEventListener('scroll', h);
     return () => window.removeEventListener('scroll', h);
   }, []);
+
+  React.useEffect(() => { setMenuOpen(false); }, [activePage]);
 
   const onDark = dark;
   const bg = dark ? BC.navy : BC.white;
@@ -45,49 +49,71 @@ function Nav({ dark = false, activePage = 'home', onNav, transparent = false }) 
   const logoSrc = onDark ? 'assets/logo-horizontal-cream-orange.png' : 'assets/logo-horizontal-navy-orange.png';
 
   return (
-    <nav data-bc-nav style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-      padding: '0 48px', height: 72,
-      background: bg,
-      borderBottom: `1px solid ${borderCol}`,
-      position: 'sticky', top: 0, zIndex: 100,
-      transition: 'background-color 300ms, border-color 300ms',
-    }}>
-      <a href="#" onClick={(e) => { e.preventDefault(); onNav && onNav('home'); }} style={{ display: 'flex', alignItems: 'center' }}>
-        <img src={logoSrc} alt="Blacksburg Church" style={{ height: 44 }} />
-      </a>
-
-      <div data-bc-navlinks style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
-        {NAV_LINKS.map((l) => {
-          const active = activePage === l.slug;
-          return (
-            <a key={l.slug} href="#" onClick={e => { e.preventDefault(); onNav && onNav(l.slug); }} style={{
-              fontFamily: fontDisplay, fontSize: 13, fontWeight: 500,
-              letterSpacing: '0.03em', textDecoration: 'none',
-              color: active ? BC.orange : (onDark ? 'rgba(249,237,214,0.85)' : BC.navy),
-              position: 'relative', padding: '6px 0',
-              transition: 'color 150ms',
-            }}
-              onMouseEnter={e => { if (!active) e.currentTarget.style.color = BC.orange; }}
-              onMouseLeave={e => { if (!active) e.currentTarget.style.color = onDark ? 'rgba(249,237,214,0.85)' : BC.navy; }}
-            >
-              {l.label}
-              {active && <span style={{ position: 'absolute', bottom: -2, left: 0, right: 0, height: 2, background: BC.orange }} />}
-            </a>
-          );
-        })}
-      </div>
-
-      <button data-bc-navcta onClick={() => onNav && onNav('connect')} style={{
-        display: 'inline-flex', alignItems: 'center', gap: 8,
-        fontFamily: fontDisplay, fontWeight: 600, letterSpacing: '0.04em',
-        border: 'none', cursor: 'pointer', borderRadius: 4,
-        padding: '8px 16px', fontSize: 12,
-        background: BC.orange, color: BC.white,
+    <>
+      <nav data-bc-nav style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 48px', height: 72,
+        background: bg,
+        borderBottom: `1px solid ${borderCol}`,
+        position: 'sticky', top: 0, zIndex: 100,
+        transition: 'background-color 300ms, border-color 300ms',
       }}>
-        Get connected <ArrowRight size={12} color="#fff" />
-      </button>
-    </nav>
+        <a href="#" onClick={(e) => { e.preventDefault(); onNav && onNav('home'); }} style={{ display: 'flex', alignItems: 'center' }}>
+          <img src={logoSrc} alt="Blacksburg Church" style={{ height: 44 }} />
+        </a>
+
+        <div data-bc-navlinks style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+          {NAV_LINKS.map((l) => {
+            const active = activePage === l.slug;
+            return (
+              <a key={l.slug} href="#" onClick={e => { e.preventDefault(); onNav && onNav(l.slug); }} style={{
+                fontFamily: fontDisplay, fontSize: 13, fontWeight: 500,
+                letterSpacing: '0.03em', textDecoration: 'none',
+                color: active ? BC.orange : (onDark ? 'rgba(249,237,214,0.85)' : BC.navy),
+                position: 'relative', padding: '6px 0',
+                transition: 'color 150ms',
+              }}
+                onMouseEnter={e => { if (!active) e.currentTarget.style.color = BC.orange; }}
+                onMouseLeave={e => { if (!active) e.currentTarget.style.color = onDark ? 'rgba(249,237,214,0.85)' : BC.navy; }}
+              >
+                {l.label}
+                {active && <span style={{ position: 'absolute', bottom: -2, left: 0, right: 0, height: 2, background: BC.orange }} />}
+              </a>
+            );
+          })}
+        </div>
+
+        <button data-bc-navcta onClick={() => onNav && onNav('connect')} style={{
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          fontFamily: fontDisplay, fontWeight: 600, letterSpacing: '0.04em',
+          border: 'none', cursor: 'pointer', borderRadius: 4,
+          padding: '8px 16px', fontSize: 12,
+          background: BC.orange, color: BC.white,
+        }}>
+          Get connected <ArrowRight size={12} color="#fff" />
+        </button>
+
+        <button
+          data-bc-hamburger
+          onClick={() => setMenuOpen(true)}
+          aria-label="Open menu"
+          style={{
+            background: 'transparent', border: 'none', cursor: 'pointer',
+            color: onDark ? BC.cream : BC.navy,
+            width: 44, height: 44, padding: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <svg width="22" height="16" viewBox="0 0 22 16" fill="none">
+            <path d="M1 1h20M1 8h20M1 15h20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+        </button>
+      </nav>
+
+      {menuOpen && (
+        <MobileMenu onClose={() => setMenuOpen(false)} activePage={activePage} onNav={onNav} />
+      )}
+    </>
   );
 }
 
