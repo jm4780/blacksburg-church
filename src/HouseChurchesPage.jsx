@@ -159,7 +159,26 @@ function WaitlistCard({ hc }) {
   const [open, setOpen] = React.useState(false);
   const [data, setData] = React.useState({ name: '', email: '' });
   const [sent, setSent] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
   const canSubmit = data.name.trim().length > 0 && data.email.trim().includes('@');
+
+  const submitWaitlist = async () => {
+    if (!canSubmit) return;
+    setSending(true);
+    try {
+      await fetch('/.netlify/functions/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name, email: data.email,
+          formType: 'waitlist',
+          context: { houseChurch: hc.name, town: hc.town },
+        }),
+      });
+    } catch (_) {}
+    setSending(false);
+    setSent(true);
+  };
 
   return (
     <div style={{
@@ -225,10 +244,10 @@ function WaitlistCard({ hc }) {
             <Button
               variant="primary"
               size="sm"
-              onClick={() => { if (canSubmit) setSent(true); }}
-              style={{ opacity: canSubmit ? 1 : 0.4, pointerEvents: canSubmit ? 'auto' : 'none' }}
+              onClick={submitWaitlist}
+              style={{ opacity: canSubmit ? 1 : 0.4, pointerEvents: canSubmit && !sending ? 'auto' : 'none' }}
             >
-              Join list <ArrowRight color="#fff" />
+              {sending ? 'Sending…' : <><span>Join list</span> <ArrowRight color="#fff" /></>}
             </Button>
           </div>
         </div>
