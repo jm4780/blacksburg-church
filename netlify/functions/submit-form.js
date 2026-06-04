@@ -1,4 +1,5 @@
-// Receives form submissions and creates people in Planning Center Online.
+// Receives form submissions, creates people in Planning Center Online,
+// and submits to the matching PCO form so submissions appear in reports.
 // Requires env vars: PCO_APP_ID and PCO_SECRET (from your PCO Personal Access Token).
 
 const PCO_BASE = 'https://api.planningcenteronline.com/people/v2';
@@ -48,13 +49,60 @@ async function addNote(personId, noteText) {
   });
 }
 
+// Submit to a PCO form so the submission appears in Planning Center reports.
+// fieldMap maps context keys (and 'phone') to PCO form field IDs.
+async function submitPCOForm(formId, personId, fieldMap, phone, context) {
+  const values = [];
+
+  if (phone && fieldMap.phone) {
+    values.push({ fieldId: fieldMap.phone, value: phone });
+  }
+
+  Object.entries(context).forEach(([key, val]) => {
+    const fieldId = fieldMap[key];
+    if (!fieldId || !val) return;
+    values.push({ fieldId, value: Array.isArray(val) ? val.join(', ') : val });
+  });
+
+  const included = values.map(({ fieldId, value }) => ({
+    type: 'FormSubmissionValue',
+    attributes: { value },
+    relationships: {
+      form_field: { data: { type: 'FormField', id: fieldId } },
+    },
+  }));
+
+  await pcoPost(`/forms/${formId}/form_submissions`, {
+    data: {
+      type: 'FormSubmission',
+      attributes: {},
+      relationships: {
+        person: { data: { type: 'Person', id: personId } },
+      },
+    },
+    included,
+  });
+}
+
+// Add PCO form IDs and field mappings here as each form is set up in Planning Center.
+// Keys in fieldMap must match the context keys sent from the frontend.
+const PCO_FORMS = {
+  visit: {
+    formId: '1130758',
+    fieldMap: {
+      phone:        '8930762',
+      visiting:     '9879601',
+      party:        '9879613',
+      neighborhood: '9879631',
+      note:         '9879642',
+    },
+  },
+  // connect, host, 'house-church', waitlist, partner — added as PCO forms are created
+};
+
 exports.handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, body: '' };
-  }
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method not allowed' };
-  }
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, body: '' };
+  if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method not allowed' };
 
   let payload;
   try {
@@ -78,12 +126,17 @@ exports.handler = async (event) => {
     await addEmail(personId, email);
     await addPhone(personId, phone);
 
-    // Build a note with any extra context so nothing is lost
-    const noteLines = [`Form: ${formType}`];
-    Object.entries(context).forEach(([k, v]) => {
-      if (v) noteLines.push(`${k}: ${Array.isArray(v) ? v.join(', ') : v}`);
-    });
-    await addNote(personId, noteLines.join('\n'));
+    const formConfig = PCO_FORMS[formType];
+    if (formConfig) {
+      await submitPCOForm(formConfig.formId, personId, formConfig.fieldMap, phone, context);
+    } else {
+      // Fallback for forms not yet configured in PCO — store as a note
+      const noteLines = [`Form: ${formType}`];
+      Object.entries(context).forEach(([k, v]) => {
+        if (v) noteLines.push(`${k}: ${Array.isArray(v) ? v.join(', ') : v}`);
+      });
+      await addNote(personId, noteLines.join('\n'));
+    }
 
     return {
       statusCode: 200,
