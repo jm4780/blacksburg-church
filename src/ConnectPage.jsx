@@ -111,9 +111,27 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
 
   const [step, setStep] = React.useState(0);
   const [data, setData] = React.useState({ situation: '', neighborhood: '', homebase: '', prefs: [], name: '', email: '', phone: '', note: '' });
+  const [submitting, setSubmitting] = React.useState(false);
 
   const next = () => setStep(s => Math.min(STEPS.length - 1, s + 1));
   const back = () => setStep(s => Math.max(0, s - 1));
+
+  const submitForm = async () => {
+    setSubmitting(true);
+    try {
+      await fetch('/.netlify/functions/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name, email: data.email, phone: data.phone,
+          formType: mode,
+          context: { situation: data.situation, neighborhood: data.neighborhood || data.homebase, preferences: data.prefs, note: data.note },
+        }),
+      });
+    } catch (_) {}
+    setSubmitting(false);
+    setStep(5);
+  };
   const togglePref = (id) => setData(d => ({ ...d, prefs: d.prefs.includes(id) ? d.prefs.filter(p => p !== id) : [...d.prefs, id] }));
 
   const currentStep = STEPS[step];
@@ -357,10 +375,10 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           ) : <span />}
           <Button
             variant="primary" size="md"
-            onClick={step === 4 ? () => setStep(5) : next}
-            style={{ opacity: canAdvance ? 1 : 0.4, pointerEvents: canAdvance ? 'auto' : 'none' }}
+            onClick={step === 4 ? submitForm : next}
+            style={{ opacity: (canAdvance && !submitting) ? 1 : 0.4, pointerEvents: (canAdvance && !submitting) ? 'auto' : 'none' }}
           >
-            {step === 0 ? 'Get started' : (step === 4 ? 'Submit' : 'Continue')} <ArrowRight color="#fff" />
+            {step === 0 ? 'Get started' : (step === 4 ? (submitting ? 'Sending…' : 'Submit') : 'Continue')} <ArrowRight color="#fff" />
           </Button>
         </div>
       )}

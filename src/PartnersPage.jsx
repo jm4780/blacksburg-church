@@ -56,8 +56,27 @@ function PartnerCard({ partner }) {
   const [signupOpen, setSignupOpen] = React.useState(false);
   const [data, setData] = React.useState({ name: '', email: '', phone: '' });
   const [sent, setSent] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
   const [hover, setHover] = React.useState(false);
   const canSubmit = data.name.trim() && data.email.includes('@') && data.phone.trim();
+
+  const submitSignup = async () => {
+    if (!canSubmit) return;
+    setSending(true);
+    try {
+      await fetch('/.netlify/functions/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.name, email: data.email, phone: data.phone,
+          formType: 'partner',
+          context: { partner: partner.name },
+        }),
+      });
+    } catch (_) {}
+    setSending(false);
+    setSent(true);
+  };
 
   return (
     <div
@@ -169,10 +188,10 @@ function PartnerCard({ partner }) {
               >← Back</button>
               <Button
                 variant="primary" size="sm"
-                onClick={() => { if (canSubmit) setSent(true); }}
-                style={{ opacity: canSubmit ? 1 : 0.4, pointerEvents: canSubmit ? 'auto' : 'none' }}
+                onClick={submitSignup}
+                style={{ opacity: canSubmit ? 1 : 0.4, pointerEvents: canSubmit && !sending ? 'auto' : 'none' }}
               >
-                Submit <ArrowRight color="#fff" />
+                {sending ? 'Sending…' : <><span>Submit</span> <ArrowRight color="#fff" /></>}
               </Button>
             </div>
           </div>

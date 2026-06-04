@@ -38,7 +38,27 @@ function HouseChurchCard({ hc, selected, onSelect }) {
   const [signupOpen, setSignupOpen] = React.useState(false);
   const [signupData, setSignupData] = React.useState({ name: '', email: '', phone: '' });
   const [signupSent, setSignupSent] = React.useState(false);
+  const [signupSending, setSignupSending] = React.useState(false);
   const canSubmit = signupData.name && signupData.email && signupData.phone;
+
+  const submitSignup = async (e) => {
+    e.stopPropagation();
+    if (!canSubmit) return;
+    setSignupSending(true);
+    try {
+      await fetch('/.netlify/functions/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: signupData.name, email: signupData.email, phone: signupData.phone,
+          formType: 'house-church',
+          context: { houseChurch: `N° ${hc.num} · ${hc.neighborhood}` },
+        }),
+      });
+    } catch (_) {}
+    setSignupSending(false);
+    setSignupSent(true);
+  };
 
   React.useEffect(() => {
     if (!selected) { setSignupOpen(false); setSignupSent(false); }
@@ -109,7 +129,7 @@ function HouseChurchCard({ hc, selected, onSelect }) {
               <Button
                 variant="primary"
                 size="sm"
-                onClick={(e) => { e.stopPropagation(); if (canSubmit) setSignupSent(true); }}
+                onClick={submitSignup}
                 style={{ opacity: canSubmit ? 1 : 0.4, pointerEvents: canSubmit ? 'auto' : 'none' }}
               >
                 Submit <ArrowRight color="#fff" />
