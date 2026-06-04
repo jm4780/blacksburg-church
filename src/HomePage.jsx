@@ -178,7 +178,7 @@ function AboutPreview({ onNav }) {
         <Reveal>
           <div data-bc-aspect-4-5 style={{ position: 'relative', aspectRatio: '1/1', borderRadius: 4, overflow: 'hidden', background: BC.navy }}>
             <img
-              src="assets/house-church-nellies-cave.jpg"
+              src="assets/SNY07283.JPG"
               alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '28% center' }}
             />
             <div style={{
