@@ -59,8 +59,10 @@ async function submitPCOForm(formId, personId, fieldMap, context) {
     .filter(([key, val]) => fieldMap[key] && val)
     .map(([key, val]) => ({
       type: 'FormSubmissionValue',
-      attributes: { value: Array.isArray(val) ? val.join(', ') : val },
-      relationships: { form_field: { data: { type: 'FormField', id: fieldMap[key] } } },
+      attributes: {
+        value: Array.isArray(val) ? val.join(', ') : val,
+        form_field_id: fieldMap[key],
+      },
     }));
 
   await pcoPost(`/forms/${formId}/form_submissions`, {
