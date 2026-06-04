@@ -53,9 +53,29 @@ async function addNote(personId, noteText) {
 
 // Submit to a PCO form so the submission appears in Planning Center reports.
 // fieldMap maps context keys (and 'phone') to PCO form field IDs.
+// phoneFieldId must use { number, location } attributes — PCO phone_number type.
 async function submitPCOForm(formId, personId, fieldMap, phone, context) {
-  // Step 1: create the form submission linked to the person
-  const submission = await pcoPost(`/forms/${formId}/form_submissions`, {
+  const included = [];
+
+  if (phone && fieldMap.phone) {
+    included.push({
+      type: 'FormSubmissionValue',
+      attributes: { number: phone, location: 'Mobile' },
+      relationships: { form_field: { data: { type: 'FormField', id: fieldMap.phone } } },
+    });
+  }
+
+  Object.entries(context).forEach(([key, val]) => {
+    const fieldId = fieldMap[key];
+    if (!fieldId || !val) return;
+    included.push({
+      type: 'FormSubmissionValue',
+      attributes: { value: Array.isArray(val) ? val.join(', ') : val },
+      relationships: { form_field: { data: { type: 'FormField', id: fieldId } } },
+    });
+  });
+
+  await pcoPost(`/forms/${formId}/form_submissions`, {
     data: {
       type: 'FormSubmission',
       attributes: {},
@@ -63,30 +83,8 @@ async function submitPCOForm(formId, personId, fieldMap, phone, context) {
         person: { data: { type: 'Person', id: personId } },
       },
     },
+    included,
   });
-
-  const submissionId = submission.data.id;
-
-  // Step 2: post each field value separately
-  const values = [];
-  if (phone && fieldMap.phone) values.push({ fieldId: fieldMap.phone, value: phone });
-  Object.entries(context).forEach(([key, val]) => {
-    const fieldId = fieldMap[key];
-    if (!fieldId || !val) return;
-    values.push({ fieldId, value: Array.isArray(val) ? val.join(', ') : val });
-  });
-
-  await Promise.all(values.map(({ fieldId, value }) =>
-    pcoPost(`/forms/${formId}/form_submissions/${submissionId}/submission_values`, {
-      data: {
-        type: 'FormSubmissionValue',
-        attributes: { value },
-        relationships: {
-          form_field: { data: { type: 'FormField', id: fieldId } },
-        },
-      },
-    }).catch(err => console.error(`Field ${fieldId} value error:`, err.message))
-  ));
 }
 
 // Add PCO form IDs and field mappings here as each form is set up in Planning Center.
