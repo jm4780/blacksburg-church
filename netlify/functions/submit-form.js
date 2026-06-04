@@ -52,34 +52,15 @@ async function addNote(personId, noteText) {
 }
 
 // Submit to a PCO form so the submission appears in Planning Center reports.
-// Submit to a PCO form using person_attributes so PCO matches/creates the person.
-// Returns the resolved person ID so phone can be added afterward.
-async function submitPCOForm(formId, firstName, lastName, email, fieldMap, context) {
-  const included = Object.entries(context)
-    .filter(([key, val]) => fieldMap[key] && val)
-    .map(([key, val]) => ({
-      type: 'FormSubmissionValue',
-      attributes: {
-        value: Array.isArray(val) ? val.join(', ') : val,
-        form_field_id: fieldMap[key],
-      },
-    }));
-
-  const submission = await pcoPost(`/forms/${formId}/form_submissions`, {
+// Links a person to a PCO form submission so it shows up in form reports.
+// Field values are stored as a note instead — PCO's API 500s on included values.
+async function submitPCOForm(formId, personId, context) {
+  await pcoPost(`/forms/${formId}/form_submissions`, {
     data: {
       type: 'FormSubmission',
-      attributes: {
-        person_attributes: {
-          first_name: firstName,
-          last_name: lastName,
-          emails_attributes: [{ location: 'Home', address: email }],
-        },
-      },
+      attributes: { person_id: personId },
     },
-    included,
   });
-
-  return submission.data.relationships.person.data.id;
 }
 
 // Add PCO form IDs and field mappings here as each form is set up in Planning Center.
@@ -120,23 +101,21 @@ exports.handler = async (event) => {
     const firstName = parts[0];
     const lastName  = parts.slice(1).join(' ') || '';
 
-    const formConfig = PCO_FORMS[formType];
-    let personId;
+    const personId = await createPerson(firstName, lastName);
+    await addEmail(personId, email);
+    await addPhone(personId, phone);
 
+    // Build a note with all context so field answers are always preserved
+    const noteLines = [`Form: ${formType}`];
+    Object.entries(context).forEach(([k, v]) => {
+      if (v) noteLines.push(`${k}: ${Array.isArray(v) ? v.join(', ') : v}`);
+    });
+    await addNote(personId, noteLines.join('\n'));
+
+    // Link to the PCO form so submission appears in reports
+    const formConfig = PCO_FORMS[formType];
     if (formConfig) {
-      // Let PCO match/create the person via person_attributes, then add phone
-      personId = await submitPCOForm(formConfig.formId, firstName, lastName, email, formConfig.fieldMap, context);
-      await addPhone(personId, phone);
-    } else {
-      // Fallback: create person directly and store context as a note
-      personId = await createPerson(firstName, lastName);
-      await addEmail(personId, email);
-      await addPhone(personId, phone);
-      const noteLines = [`Form: ${formType}`];
-      Object.entries(context).forEach(([k, v]) => {
-        if (v) noteLines.push(`${k}: ${Array.isArray(v) ? v.join(', ') : v}`);
-      });
-      await addNote(personId, noteLines.join('\n'));
+      await submitPCOForm(formConfig.formId, personId, context);
     }
 
     return {
