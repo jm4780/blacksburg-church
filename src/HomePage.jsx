@@ -478,4 +478,4 @@ function HomePage({ onNav, heroVariant = 'topo' }) {
   );
 }
 
-Object.assign(window, { HomePage, HeroTopo, HeroPhoto, HeroType });
+Object.assign(window, { HomePage, HeroTopo, HeroPhoto, HeroType, HomeCTA });
