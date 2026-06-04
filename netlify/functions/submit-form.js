@@ -52,28 +52,18 @@ async function addNote(personId, noteText) {
 }
 
 // Submit to a PCO form so the submission appears in Planning Center reports.
-// fieldMap maps context keys (and 'phone') to PCO form field IDs.
-// phoneFieldId must use { number, location } attributes — PCO phone_number type.
-async function submitPCOForm(formId, personId, fieldMap, phone, context) {
-  const included = [];
-
-  if (phone && fieldMap.phone) {
-    included.push({
-      type: 'FormSubmissionValue',
-      attributes: { number: phone, location: 'Mobile' },
-      relationships: { form_field: { data: { type: 'FormField', id: fieldMap.phone } } },
-    });
-  }
-
-  Object.entries(context).forEach(([key, val]) => {
-    const fieldId = fieldMap[key];
-    if (!fieldId || !val) return;
-    included.push({
+// fieldMap maps context keys to PCO form field IDs.
+// Phone is intentionally excluded — it's added to the person profile separately.
+async function submitPCOForm(formId, personId, fieldMap, context) {
+  const included = Object.entries(context)
+    .filter(([key, val]) => fieldMap[key] && val)
+    .map(([key, val]) => ({
       type: 'FormSubmissionValue',
       attributes: { value: Array.isArray(val) ? val.join(', ') : val },
-      relationships: { form_field: { data: { type: 'FormField', id: fieldId } } },
-    });
-  });
+      relationships: { form_field: { data: { type: 'FormField', id: fieldMap[key] } } },
+    }));
+
+  console.log('PCO form submission payload:', JSON.stringify({ formId, personId, included }));
 
   await pcoPost(`/forms/${formId}/form_submissions`, {
     data: {
@@ -93,7 +83,7 @@ const PCO_FORMS = {
   visit: {
     formId: '1130758',
     fieldMap: {
-      phone:        '8930762',
+      // phone omitted — added to person profile via People API instead
       visiting:     '9879601',
       party:        '9879613',
       neighborhood: '9879631',
@@ -131,7 +121,7 @@ exports.handler = async (event) => {
 
     const formConfig = PCO_FORMS[formType];
     if (formConfig) {
-      await submitPCOForm(formConfig.formId, personId, formConfig.fieldMap, phone, context);
+      await submitPCOForm(formConfig.formId, personId, formConfig.fieldMap, context);
     } else {
       // Fallback for forms not yet configured in PCO — store as a note
       const noteLines = [`Form: ${formType}`];
