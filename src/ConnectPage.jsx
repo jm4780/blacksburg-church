@@ -118,15 +118,17 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
 
   const submitForm = async () => {
     setSubmitting(true);
+    const situationLabel = cfg.options.find(o => o.id === data.situation)?.label || data.situation;
+    const ctx = isVisit
+      ? { visiting: situationLabel, party: data.neighborhood, neighborhood: data.homebase, note: data.note }
+      : isHost
+      ? { readiness: situationLabel, reason: data.hostReason, address: data.neighborhood, note: data.note }
+      : { situation: situationLabel, preferences: data.prefs, neighborhood: data.neighborhood, note: data.note };
     try {
       await fetch('/.netlify/functions/submit-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: data.name, email: data.email, phone: data.phone,
-          formType: mode,
-          context: { situation: data.situation, neighborhood: data.neighborhood || data.homebase, preferences: data.prefs, note: data.note },
-        }),
+        body: JSON.stringify({ name: data.name, email: data.email, phone: data.phone, formType: mode, context: ctx }),
       });
     } catch (_) {}
     setSubmitting(false);
