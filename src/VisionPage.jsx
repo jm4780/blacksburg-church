@@ -400,45 +400,6 @@ function VisionBuildings({ onNav }) {
           </h2>
         </div>
 
-        {/* The conviction — set apart like a stamped statement */}
-        <div style={{
-          background: BC.navy,
-          color: BC.cream,
-          padding: '64px 56px',
-          position: 'relative',
-          overflow: 'hidden',
-          marginBottom: 64,
-          maxWidth: 1100,
-        }}>
-          <img src={TOPO.navy} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.18 }} />
-          <div style={{ position: 'relative', zIndex: 2 }}>
-            <div style={{
-              fontFamily: fontDisplay,
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: BC.orange,
-              marginBottom: 24,
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-            }}>
-              <span style={{ width: 24, height: 1, background: BC.orange, display: 'inline-block' }} />
-              Our conviction
-            </div>
-            <h3 style={{
-              fontFamily: fontDisplay,
-              fontSize: 'clamp(36px, 5.5vw, 76px)',
-              fontWeight: 800,
-              color: BC.cream,
-              letterSpacing: '-0.03em',
-              lineHeight: 1.02,
-            }}>
-              Whatever facility we have<br/>
-              <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>will pay for itself, entirely.</span>
-            </h3>
-          </div>
-        </div>
-
         {/* Supporting points — three structured columns */}
         <div style={{ maxWidth: 1100, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 40 }}>
           {[
