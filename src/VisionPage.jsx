@@ -221,7 +221,7 @@ function VisionMultiplying() {
           <SectionNumber onDark>02</SectionNumber>
           <Eyebrow>Multiplying</Eyebrow>
           <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(44px, 6.5vw, 100px)', fontWeight: 800, color: BC.cream, letterSpacing: '-0.035em', lineHeight: 0.96, marginBottom: 36 }}>
-            If it's worth doing,<br/>it's <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>worth multiplying.</span>
+            We only do what is<br/><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>worth multiplying.</span>
           </h2>
           <p style={{ fontFamily: fontBody, fontSize: 20, color: 'rgba(249,237,214,0.88)', lineHeight: 1.6, fontWeight: 400, marginBottom: 18, maxWidth: 760 }}>
             Multiplication is built into the fabric of creation. Every living thing that doesn't multiply, eventually goes extinct.
