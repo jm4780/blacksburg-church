@@ -393,9 +393,9 @@ function VisionBuildings({ onNav }) {
             lineHeight: 1.0,
             marginTop: 8,
           }}>
-            Space is not sacred.<br/>
+            We only pay for space
             <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>
-              But sacred things happen in space.
+              that pays for itself.
             </span>
           </h2>
         </div>
