@@ -318,7 +318,7 @@ function VisionNote({ num, label, title, body }) {
 function MultiplicationDiagram() {
   return (
     <div style={{ width: '100%', maxWidth: 540, aspectRatio: '1 / 1', position: 'relative' }}>
-      <svg viewBox="0 0 520 520" width="100%" height="100%" style={{ display: 'block' }}>
+      <svg viewBox="-18 -18 556 556" width="100%" height="100%" style={{ display: 'block' }}>
         {/* Faint reference rings */}
         <circle cx="260" cy="260" r="90"  fill="none" stroke={BC.cream} strokeOpacity="0.10" strokeWidth="1" />
         <circle cx="260" cy="260" r="160" fill="none" stroke={BC.cream} strokeOpacity="0.08" strokeWidth="1" strokeDasharray="2 5" />
