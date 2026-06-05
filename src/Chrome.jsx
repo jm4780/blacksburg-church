@@ -4,8 +4,8 @@ const NAV_LINKS = [
   { label: 'Who we are',        slug: 'about' },
   { label: 'House Churches',    slug: 'house-churches' },
   { label: 'Sunday Gatherings', slug: 'gatherings' },
-  { label: 'Messages',          slug: 'messages' },
   { label: 'Partners',          slug: 'partners' },
+  { label: 'Messages',          slug: 'messages' },
   { label: 'Give',              slug: 'give' },
 ];
 
@@ -183,6 +183,7 @@ function Footer({ onNav }) {
       ['Who we are', 'about'],
       ['House Churches', 'house-churches'],
       ['Sunday Gatherings', 'gatherings'],
+      ['Partners', 'partners'],
       ['Messages', 'messages'],
     ]},
     { title: 'Connect', items: [
