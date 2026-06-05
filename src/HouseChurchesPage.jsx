@@ -352,7 +352,7 @@ function MapView({ filtered, launching, selected, setSelected }) {
               <div data-bc-map-tooltip style={{
                 position: 'absolute',
                 left: '50%',
-                ...(hc.y < 15
+                ...(hc.y <= 22
                   ? { top: 'calc(100% + 6px)' }
                   : { bottom: 'calc(100% + 6px)' }
                 ),
