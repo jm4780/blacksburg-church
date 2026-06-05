@@ -65,6 +65,9 @@ button[data-bc-hamburger] { display: none !important; }
    ANNOUNCEMENT BAR
 ═══════════════════════════════════════════════════ */
 [data-device="mobile"] [data-bc-announce] {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 101 !important;
   padding: 9px 16px !important;
   font-size: 11px !important;
   flex-wrap: wrap !important;
@@ -357,7 +360,7 @@ button[data-bc-hamburger] { display: none !important; }
 /* ═══════════════════════════════════════════════════
    STICKY — disable on mobile (becomes normal block)
 ═══════════════════════════════════════════════════ */
-[data-device="mobile"] [style*="position: sticky"] {
+[data-device="mobile"] [style*="position: sticky"]:not([data-bc-nav]) {
   position: relative !important;
   top: auto !important;
 }
