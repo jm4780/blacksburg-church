@@ -147,7 +147,7 @@ button[data-bc-hamburger] { display: none !important; }
   align-items: flex-end !important;
 }
 [data-device="mobile"] [data-bc-hero-inner] {
-  padding: 0 20px 48px !important;
+  padding: 0 20px 22vh !important;
 }
 [data-device="mobile"] [data-bc-hero-coords] { display: none !important; }
 
