@@ -518,7 +518,7 @@ function MessagesPage({ onNav }) {
               <img src={TOPO.navyOrange} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.22 }} />
               <div style={{ position: 'relative', zIndex: 2 }}>
                 <div style={{ fontFamily: fontDisplay, fontSize: 11, fontWeight: 600, letterSpacing: '0.22em', textTransform: 'uppercase', color: BC.orange, marginBottom: 8 }}>Never miss a message</div>
-                <h3 style={{ fontFamily: fontDisplay, fontSize: 26, fontWeight: 800, color: BC.cream, letterSpacing: '-0.015em' }}>More than sermons — subscribe on YouTube.</h3>
+                <h3 style={{ fontFamily: fontDisplay, fontSize: 26, fontWeight: 800, color: BC.cream, letterSpacing: '-0.015em' }}>More than sermons — it's all on YouTube.</h3>
                 <p style={{ fontFamily: fontBody, fontSize: 15, color: 'rgba(249,237,214,0.7)', fontWeight: 300, lineHeight: 1.55, marginTop: 8, maxWidth: 480 }}>Sermons, podcasts, and more — it's all on our channel.</p>
               </div>
               <div style={{ position: 'relative', zIndex: 2, flexShrink: 0 }}>
