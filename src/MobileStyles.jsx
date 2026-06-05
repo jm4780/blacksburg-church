@@ -343,31 +343,37 @@ button[data-bc-hamburger] { display: none !important; }
   max-height: none !important;
 }
 
-/* Currently In series card: reduce padding + stack layout */
+/* Currently In series card: compact mobile layout */
 [data-device="mobile"] [data-bc-series-current] {
-  padding: 28px 20px !important;
+  padding: 20px 16px !important;
   min-height: 0 !important;
 }
 [data-device="mobile"] [data-bc-series-current] > div:nth-child(2) {
   flex-direction: column !important;
-  gap: 16px !important;
+  gap: 10px !important;
 }
 [data-device="mobile"] [data-bc-series-current] > div:nth-child(2) > div:last-child {
   text-align: left !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
 }
 [data-device="mobile"] [data-bc-series-current] [style*="font-size: 48px"] {
-  font-size: 32px !important;
-  line-height: 1.1 !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+}
+[data-device="mobile"] [data-bc-series-current] p {
+  display: none !important;
 }
 [data-device="mobile"] [data-bc-series-current] > div:last-child {
-  margin-top: 20px !important;
+  margin-top: 14px !important;
 }
 
 /* Library row: 4-col → 2-col (icon + title; hide series + duration) */
 [data-device="mobile"] [style*="grid-template-columns: 52px 1fr 180px 80px"] {
   grid-template-columns: 40px 1fr !important;
   gap: 14px !important;
-  padding: 16px 0 !important;
+  padding: 16px 16px !important;
 }
 [data-device="mobile"] [style*="grid-template-columns: 52px 1fr 180px 80px"] > *:nth-child(n+3) {
   display: none !important;

@@ -279,6 +279,8 @@ function MessagesPage({ onNav }) {
   const seriesData = React.useMemo(() => buildSeriesData(messages), [messages]);
   const allBooks   = React.useMemo(() => Array.from(new Set(messages.map(m => m.book))).filter(Boolean).sort(), [messages]);
 
+  React.useEffect(() => { if (openSermon) window.scrollTo({ top: 0 }); }, [openSermon]);
+
   if (openSermon) {
     return <SermonDetail sermon={openSermon} onBack={() => setOpenSermon(null)} messages={messages} seriesData={seriesData} />;
   }
