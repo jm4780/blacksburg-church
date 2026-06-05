@@ -271,9 +271,9 @@ function WaitlistCard({ hc }) {
 
 function MapView({ filtered, launching, selected, setSelected }) {
   return (
+    <div style={{ borderRadius: 4, overflow: 'hidden', border: `1px solid ${BC.border}` }}>
     <div style={{
       position: 'relative', aspectRatio: '4/3', background: BC.navy,
-      borderRadius: 4, border: `1px solid ${BC.border}`,
     }}>
       {/* Custom NRV map */}
       <img
@@ -366,28 +366,25 @@ function MapView({ filtered, launching, selected, setSelected }) {
         );
       })}
 
-      {/* Legend — bottom-right, compact */}
-      <div style={{
-        position: 'absolute', right: 16, bottom: 16, background: 'rgba(15,34,51,0.8)',
-        backdropFilter: 'blur(8px)', padding: '10px 12px', borderRadius: 4,
-        zIndex: 4,
-      }}>
-        <div style={{ fontFamily: fontDisplay, fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(249,237,214,0.5)', marginBottom: 6 }}>
-          Legend
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <img src="assets/brandmark-orange.png" alt="" style={{ width: 11, height: 16, display: 'block' }} />
-            <div style={{ fontFamily: fontBody, fontSize: 10, color: BC.cream }}>Meeting Now</div>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <img src="assets/brandmark-orange.png" alt="" style={{ width: 11, height: 16, display: 'block', opacity: 0.55 }} />
-            <div style={{ fontFamily: fontBody, fontSize: 10, color: BC.cream }}>Future House Churches</div>
-          </div>
-        </div>
-      </div>
-
       {/* Region label */}
+    </div>
+
+    {/* Legend below map — full width, both items equally spaced */}
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'space-around',
+      padding: '11px 20px',
+      borderTop: `1px solid ${BC.border}`,
+      background: BC.white,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <img src="assets/brandmark-orange.png" alt="" style={{ width: 11, height: 16, display: 'block' }} />
+        <span style={{ fontFamily: fontBody, fontSize: 12, color: BC.navy, fontWeight: 400 }}>Meeting Now</span>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <img src="assets/brandmark-orange.png" alt="" style={{ width: 11, height: 16, display: 'block', opacity: 0.55 }} />
+        <span style={{ fontFamily: fontBody, fontSize: 12, color: BC.navy, fontWeight: 400 }}>Future House Churches</span>
+      </div>
+    </div>
     </div>
   );
 }
@@ -433,9 +430,9 @@ function HouseChurchesPage({ onNav }) {
 
           {/* Three pillars on a dashed line */}
           <div style={{ position: 'relative' }}>
-            <div style={{ position: 'absolute', top: 7, left: 0, right: 0, borderTop: `1px dashed ${BC.navyMuted}`, opacity: 0.35 }} />
+            <div data-bc-pillar-line style={{ position: 'absolute', top: 7, left: 0, right: 0, borderTop: `1px dashed ${BC.navyMuted}`, opacity: 0.35 }} />
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0 }}>
+            <div data-bc-pillars style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0 }}>
               {[
                 { roman: 'I',   label: 'A meal together',             body: "We share a meal every week\u2014whatever the host is cooking, plus whatever others bring. It's unhurried and easy. You catch up on the week, meet the people sitting next to you, and there's always a seat saved for someone new. If it's your first time, you don't need to bring anything\u2014just come." },
                 { roman: 'II',  label: 'A discussion in Scripture',   body: "We open the Bible together and talk through that week's passage\u2014usually the same one preached on Sunday. The discussion is about the passage itself, not the sermon, so anyone can ask questions, share what stood out, or just listen. You don't need to know the Bible well or to have been at Sunday's gathering\u2014bring your questions and your curiosity." },
@@ -446,6 +443,7 @@ function HouseChurchesPage({ onNav }) {
                 return (
                   <div
                     key={m.roman}
+                    data-bc-pillar
                     style={{
                       position: 'relative',
                       paddingTop: 36,
@@ -454,7 +452,7 @@ function HouseChurchesPage({ onNav }) {
                       borderRight: !isLast ? `1px solid ${BC.border}` : 'none',
                     }}
                   >
-                    <div style={{
+                    <div data-bc-pillar-dot style={{
                       position: 'absolute',
                       top: 0,
                       left: isFirst ? 0 : 40,

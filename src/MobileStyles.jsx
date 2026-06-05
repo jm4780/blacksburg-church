@@ -434,6 +434,22 @@ button[data-bc-hamburger] { display: none !important; }
 }
 
 /* ═══════════════════════════════════════════════════
+   HOUSE CHURCH PILLARS (I / II / III steps)
+   Desktop: horizontal 3-col with timeline dots + dashes
+   Mobile: vertical steps with orange left accent
+═══════════════════════════════════════════════════ */
+[data-device="mobile"] [data-bc-pillar-line],
+[data-device="mobile"] [data-bc-pillar-dot] { display: none !important; }
+[data-device="mobile"] [data-bc-pillars] { gap: 0 !important; }
+[data-device="mobile"] [data-bc-pillar] {
+  padding: 0 0 0 20px !important;
+  border-right: none !important;
+  border-left: 3px solid #F58220 !important;
+  margin-bottom: 28px !important;
+}
+[data-device="mobile"] [data-bc-pillar]:last-child { margin-bottom: 0 !important; }
+
+/* ═══════════════════════════════════════════════════
    HOUSE CHURCH CARDS padding
 ═══════════════════════════════════════════════════ */
 [data-device="mobile"] div[style*="padding: 32px 28px"] {
