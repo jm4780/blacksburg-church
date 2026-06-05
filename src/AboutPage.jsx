@@ -104,7 +104,7 @@ function AboutPage({ onNav }) {
           <div style={{ maxWidth: 960, marginBottom: 72 }}>
             <Eyebrow>What makes us different</Eyebrow>
             <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(44px, 6.5vw, 88px)', fontWeight: 800, color: BC.navy, letterSpacing: '-0.035em', lineHeight: 0.98, marginBottom: 36 }}>
-              The church<br />Jesus <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>intended.</span>
+              A church designed<br />to <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>multiply.</span>
             </h2>
             <p style={{ fontFamily: fontBody, fontSize: 22, color: BC.navy, lineHeight: 1.55, fontWeight: 400, marginBottom: 18 }}>
               Blacksburg Church is one church of many house churches, connected under one common eldership — built around <em style={{ fontStyle: 'italic', fontWeight: 400 }}>distributed pastoral leadership</em>, <em style={{ fontStyle: 'italic', fontWeight: 400 }}>diverse discipleship communities</em>, and <em style={{ fontStyle: 'italic', fontWeight: 400 }}>decentralized from primary place and pastor</em>.
