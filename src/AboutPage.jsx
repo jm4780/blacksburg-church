@@ -107,10 +107,7 @@ function AboutPage({ onNav }) {
               A church designed<br />to <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>multiply.</span>
             </h2>
             <p style={{ fontFamily: fontBody, fontSize: 22, color: BC.navy, lineHeight: 1.55, fontWeight: 400, marginBottom: 18 }}>
-              Blacksburg Church is one church of many house churches, connected under one common eldership — built around <em style={{ fontStyle: 'italic', fontWeight: 400 }}>distributed pastoral leadership</em>, <em style={{ fontStyle: 'italic', fontWeight: 400 }}>diverse discipleship communities</em>, and <em style={{ fontStyle: 'italic', fontWeight: 400 }}>decentralized from primary place and pastor</em>.
-            </p>
-            <p style={{ fontFamily: fontBody, fontSize: 17, color: BC.navyMuted, lineHeight: 1.75, fontWeight: 300 }}>
-              This is what we hope to be true of this church — and what guides the way we operate every day until it is.
+              We're in pursuit of becoming what Jesus originally intended his church to be, and we believe the clearest place to discover that is in the early churches of Scripture. Across them, three elements consistently emerge—and we're convinced these three are key to a multiplying movement.
             </p>
           </div>
 
