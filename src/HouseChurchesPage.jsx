@@ -366,12 +366,33 @@ function MapView({ filtered, launching, selected, setSelected }) {
         );
       })}
 
+      {/* Legend — bottom-right overlay (desktop) */}
+      <div data-bc-map-legend-overlay style={{
+        position: 'absolute', right: 16, bottom: 16, background: 'rgba(15,34,51,0.8)',
+        backdropFilter: 'blur(8px)', padding: '10px 12px', borderRadius: 4,
+        zIndex: 4,
+      }}>
+        <div style={{ fontFamily: fontDisplay, fontSize: 9, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(249,237,214,0.5)', marginBottom: 6 }}>
+          Legend
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <img src="assets/brandmark-orange.png" alt="" style={{ width: 11, height: 16, display: 'block' }} />
+            <div style={{ fontFamily: fontBody, fontSize: 10, color: BC.cream }}>Meeting Now</div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <img src="assets/brandmark-orange.png" alt="" style={{ width: 11, height: 16, display: 'block', opacity: 0.55 }} />
+            <div style={{ fontFamily: fontBody, fontSize: 10, color: BC.cream }}>Future House Churches</div>
+          </div>
+        </div>
+      </div>
+
       {/* Region label */}
     </div>
 
-    {/* Legend below map — full width, both items equally spaced */}
-    <div style={{
-      display: 'flex', alignItems: 'center', justifyContent: 'space-around',
+    {/* Legend below map — mobile only (hidden on desktop via CSS) */}
+    <div data-bc-map-legend-bar style={{
+      display: 'none', alignItems: 'center', justifyContent: 'space-around',
       padding: '11px 20px',
       borderTop: `1px solid ${BC.border}`,
       background: BC.white,
