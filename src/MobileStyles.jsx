@@ -9,7 +9,7 @@ function MobileStyles() {
 ═══════════════════════════════════════════════════ */
 [data-device="mobile"] {
   -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 [data-device="mobile"] * {
   -webkit-tap-highlight-color: transparent;
@@ -495,7 +495,7 @@ button[data-bc-hamburger] { display: none !important; }
 /* ═══════════════════════════════════════════════════
    OVERFLOW / CLIP
 ═══════════════════════════════════════════════════ */
-[data-device="mobile"] { overflow-x: hidden; }
+[data-device="mobile"] { overflow-x: clip; }
 `;
   return <style dangerouslySetInnerHTML={{ __html: css }} />;
 }
