@@ -105,7 +105,7 @@ function App() {
 
   const appContent = (
     <div data-screen-label={page}>
-      <div data-bc-header>
+      <div data-bc-header style={{ position: 'sticky', top: 0, zIndex: 100 }}>
         {tweaks.announcementBar && <Announcement onNav={navigate} />}
         <Nav dark={darkNav} transparent={transparentNav && tweaks.heroVariant !== 'type'} activePage={page} onNav={navigate} />
       </div>
