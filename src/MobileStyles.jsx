@@ -34,6 +34,7 @@ function MobileStyles() {
   white-space: nowrap !important;
   overflow-wrap: normal !important;
   word-break: normal !important;
+  max-width: none !important;
 }
 [data-device="mobile"] h1,
 [data-device="mobile"] h2,
