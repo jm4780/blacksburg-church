@@ -56,6 +56,7 @@ button[data-bc-hamburger] { display: none !important; }
 [data-device="mobile"] nav[data-bc-nav] {
   padding: 0 16px !important;
   height: 56px !important;
+  top: 54px !important;
 }
 [data-device="mobile"] nav[data-bc-nav] img { height: 34px !important; }
 [data-device="mobile"] nav[data-bc-nav] > div[data-bc-navlinks] { display: none !important; }
