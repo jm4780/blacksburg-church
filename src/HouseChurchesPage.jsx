@@ -349,7 +349,7 @@ function MapView({ filtered, launching, selected, setSelected }) {
               )}
             </div>
             {isSel && (
-              <div style={{
+              <div data-bc-map-tooltip style={{
                 position: 'absolute',
                 left: '50%',
                 ...(hc.y < 15

@@ -25,10 +25,15 @@ function MobileStyles() {
 ═══════════════════════════════════════════════════ */
 [data-device="mobile"] span[style*="white-space: nowrap"],
 [data-device="mobile"] span[style*="whiteSpace"],
-[data-device="mobile"] div[style*="white-space: nowrap"] {
+[data-device="mobile"] div[style*="white-space: nowrap"]:not([data-bc-map-tooltip]) {
   white-space: normal !important;
   overflow-wrap: break-word !important;
   word-break: break-word !important;
+}
+[data-device="mobile"] [data-bc-map-tooltip] {
+  white-space: nowrap !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
 }
 [data-device="mobile"] h1,
 [data-device="mobile"] h2,
