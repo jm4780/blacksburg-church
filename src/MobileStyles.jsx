@@ -57,7 +57,6 @@ button[data-bc-hamburger] { display: none !important; }
 [data-device="mobile"] nav[data-bc-nav] {
   padding: 0 16px !important;
   height: 56px !important;
-  top: 54px !important;
 }
 [data-device="mobile"] nav[data-bc-nav] img { height: 34px !important; }
 [data-device="mobile"] nav[data-bc-nav] > div[data-bc-navlinks] { display: none !important; }
@@ -66,10 +65,13 @@ button[data-bc-hamburger] { display: none !important; }
 /* ═══════════════════════════════════════════════════
    ANNOUNCEMENT BAR
 ═══════════════════════════════════════════════════ */
-[data-device="mobile"] [data-bc-announce] {
+[data-device="mobile"] [data-bc-header] {
   position: sticky !important;
   top: 0 !important;
-  z-index: 101 !important;
+  z-index: 100 !important;
+}
+
+[data-device="mobile"] [data-bc-announce] {
   padding: 9px 16px !important;
   font-size: 11px !important;
   flex-wrap: wrap !important;

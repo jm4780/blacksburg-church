@@ -105,8 +105,10 @@ function App() {
 
   const appContent = (
     <div data-screen-label={page}>
-      {tweaks.announcementBar && <Announcement onNav={navigate} />}
-      <Nav dark={darkNav} transparent={transparentNav && tweaks.heroVariant !== 'type'} activePage={page} onNav={navigate} />
+      <div data-bc-header>
+        {tweaks.announcementBar && <Announcement onNav={navigate} />}
+        <Nav dark={darkNav} transparent={transparentNav && tweaks.heroVariant !== 'type'} activePage={page} onNav={navigate} />
+      </div>
 
       {page === 'home'           && <HomePage onNav={navigate} heroVariant={tweaks.heroVariant} />}
       {page === 'about'          && <AboutPage onNav={navigate} />}
