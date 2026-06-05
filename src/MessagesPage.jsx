@@ -336,7 +336,7 @@ function MessagesPage({ onNav }) {
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 40, alignItems: 'stretch' }}>
-                <div onClick={() => setOpenSermon(latest)} style={{
+                <div data-bc-latest-thumb onClick={() => setOpenSermon(latest)} style={{
                   position: 'relative', aspectRatio: '16/9', borderRadius: 4, overflow: 'hidden',
                   background: BC.navyDark, cursor: 'pointer',
                 }}
@@ -398,7 +398,7 @@ function MessagesPage({ onNav }) {
               </h2>
 
               {currentSeries && (
-                <div onClick={() => { setSeriesFilter(currentSeries.name); document.getElementById('library').scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
+                <div data-bc-series-current onClick={() => { setSeriesFilter(currentSeries.name); document.getElementById('library').scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
                   style={{
                     position: 'relative', overflow: 'hidden', borderRadius: 4, cursor: 'pointer',
                     background: BC.navy, padding: 48, marginBottom: 24, color: BC.cream,
