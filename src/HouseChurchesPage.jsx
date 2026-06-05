@@ -271,7 +271,7 @@ function WaitlistCard({ hc }) {
 
 function MapView({ filtered, launching, selected, setSelected }) {
   return (
-    <div style={{ borderRadius: 4, overflow: 'hidden', border: `1px solid ${BC.border}` }}>
+    <div style={{ borderRadius: 4, border: `1px solid ${BC.border}` }}>
     <div style={{
       position: 'relative', aspectRatio: '4/3', background: BC.navy,
     }}>
