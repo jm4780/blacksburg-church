@@ -550,4 +550,4 @@ function FilterRow({ label, values, active, onChange }) {
   );
 }
 
-Object.assign(window, { MessagesPage });
+Object.assign(window, { MessagesPage, useSermons });

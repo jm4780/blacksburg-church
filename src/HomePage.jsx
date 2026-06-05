@@ -369,18 +369,10 @@ function HomeGatherings({ onNav }) {
 }
 
 // ── MESSAGES preview ─────────────────────────────────────
-// Mirrors the Messages page data — first 3 sermons.
-const HOMEPAGE_MESSAGES = [
-  { title: 'Are You Missing the Point?', date: 'Apr 19, 2026', series: 'Good News', passage: 'Galatians 2:1–21', length: '38 min', thumb: 'assets/latest-sermon-thumb.jpg' },
-  { title: 'No Other Gospel',            date: 'Apr 12, 2026', series: 'Good News', passage: 'Galatians 1:1–24', length: '35 min' },
-  { title: 'The Weight of Welcome',      date: 'Apr 5, 2026',  series: 'Table',     passage: 'Luke 14:12–24',   length: '32 min' },
-];
-const _OLD_HOMEPAGE_MESSAGES = [
-  { title: 'The Weight of Welcome', speaker: 'Pastor Daniel Kim', date: 'Apr 13, 2026', series: 'Table', length: '32 min' },
-  { title: 'Why We Eat Together', speaker: 'Pastor Daniel Kim', date: 'Apr 6, 2026', series: 'Table', length: '28 min' },
-  { title: 'Small Is Not a Problem', speaker: 'Elder Marcus Webb', date: 'Mar 30, 2026', series: 'Table', length: '36 min' },
-];
 function HomeMessages({ onNav }) {
+  const { messages, loading } = useSermons();
+  const preview = messages.slice(0, 3);
+
   return (
     <Section bg={BC.white} py={120}>
       <div data-bc-sectionhead style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 56, flexWrap: 'wrap', gap: 20 }}>
@@ -395,52 +387,63 @@ function HomeMessages({ onNav }) {
         </Button>
       </div>
 
-      <div data-bc-grid style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-        {HOMEPAGE_MESSAGES.map((m, i) => (
-          <Reveal key={m.title} delay={i * 80}>
-            <div
-              onClick={() => onNav && onNav('messages')}
-              style={{ cursor: 'pointer', borderTop: `2px solid ${BC.navy}`, paddingTop: 24 }}
-            >
-              <div style={{
-                position: 'relative', aspectRatio: '16/10', borderRadius: 2, overflow: 'hidden',
-                background: BC.navyDark, marginBottom: 20,
-              }}>
-                {m.thumb ? (
-                  <img src={m.thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                  <img src={TOPO.navyOrange} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />
-                )}
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(15,34,51,0) 40%, rgba(15,34,51,0.55) 100%)' }} />
-                <div style={{
-                  position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <div style={{ width: 56, height: 56, borderRadius: '50%', background: BC.orange, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.25)' }}>
-                    <svg width="18" height="22" viewBox="0 0 18 22" fill="white"><path d="M2 1l14 10L2 21V1z"/></svg>
-                  </div>
-                </div>
-                <div style={{
-                  position: 'absolute', top: 12, left: 12, padding: '3px 8px', background: 'rgba(0,0,0,0.6)',
-                  color: BC.cream, fontFamily: fontDisplay, fontSize: 10, fontWeight: 600, letterSpacing: '0.1em',
-                }}>
-                  {m.length.toUpperCase()}
-                </div>
-              </div>
-              <div style={{ fontFamily: fontDisplay, fontSize: 10, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: BC.orange, marginBottom: 10 }}>
-                Series · {m.series}
-              </div>
-              <div style={{ fontFamily: fontDisplay, fontSize: 22, fontWeight: 700, color: BC.navy, letterSpacing: '-0.01em', lineHeight: 1.2, marginBottom: 10 }}>
-                {m.title}
-              </div>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap', fontFamily: fontBody, fontSize: 13, color: BC.navyMuted, fontWeight: 300 }}>
-                <span style={{ fontStyle: 'italic', color: BC.orange }}>{m.passage}</span>
-                <span style={{ color: BC.border }}>·</span>
-                <span>{m.date}</span>
-              </div>
+      {loading && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+          {[0, 1, 2].map(i => (
+            <div key={i} style={{ borderTop: `2px solid ${BC.border}`, paddingTop: 24 }}>
+              <div style={{ aspectRatio: '16/10', background: BC.creamSubtle, borderRadius: 2, marginBottom: 20 }} />
+              <div style={{ height: 10, background: BC.creamSubtle, borderRadius: 2, width: '50%', marginBottom: 14 }} />
+              <div style={{ height: 18, background: BC.creamSubtle, borderRadius: 2, marginBottom: 8 }} />
+              <div style={{ height: 10, background: BC.creamSubtle, borderRadius: 2, width: '35%' }} />
             </div>
-          </Reveal>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {!loading && preview.length > 0 && (
+        <div data-bc-grid style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+          {preview.map((m, i) => (
+            <Reveal key={m.id} delay={i * 80}>
+              <div
+                onClick={() => onNav && onNav('messages')}
+                style={{ cursor: 'pointer', borderTop: `2px solid ${BC.navy}`, paddingTop: 24 }}
+              >
+                <div style={{
+                  position: 'relative', aspectRatio: '16/10', borderRadius: 2, overflow: 'hidden',
+                  background: BC.navyDark, marginBottom: 20,
+                }}>
+                  {m.thumb
+                    ? <img src={m.thumb} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <img src={TOPO.navyOrange} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />
+                  }
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(15,34,51,0) 40%, rgba(15,34,51,0.55) 100%)' }} />
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: 56, height: 56, borderRadius: '50%', background: BC.orange, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 16px rgba(0,0,0,0.25)' }}>
+                      <svg width="18" height="22" viewBox="0 0 18 22" fill="white"><path d="M2 1l14 10L2 21V1z"/></svg>
+                    </div>
+                  </div>
+                  {m.length && (
+                    <div style={{ position: 'absolute', top: 12, left: 12, padding: '3px 8px', background: 'rgba(0,0,0,0.6)', color: BC.cream, fontFamily: fontDisplay, fontSize: 10, fontWeight: 600, letterSpacing: '0.1em' }}>
+                      {m.length.toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <div style={{ fontFamily: fontDisplay, fontSize: 10, fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase', color: BC.orange, marginBottom: 10 }}>
+                  Series · {m.series}
+                </div>
+                <div style={{ fontFamily: fontDisplay, fontSize: 22, fontWeight: 700, color: BC.navy, letterSpacing: '-0.01em', lineHeight: 1.2, marginBottom: 10 }}>
+                  {m.title}
+                </div>
+                <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap', fontFamily: fontBody, fontSize: 13, color: BC.navyMuted, fontWeight: 300 }}>
+                  {m.passage && <span style={{ fontStyle: 'italic', color: BC.orange }}>{m.passage}</span>}
+                  {m.passage && <span style={{ color: BC.border }}>·</span>}
+                  <span>{m.date}</span>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      )}
     </Section>
   );
 }
