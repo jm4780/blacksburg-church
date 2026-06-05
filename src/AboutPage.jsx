@@ -104,7 +104,7 @@ function AboutPage({ onNav }) {
           <div style={{ maxWidth: 960, marginBottom: 72 }}>
             <Eyebrow>What makes us different</Eyebrow>
             <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(44px, 6.5vw, 88px)', fontWeight: 800, color: BC.navy, letterSpacing: '-0.035em', lineHeight: 0.98, marginBottom: 36 }}>
-              A church designed<br />to <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>multiply.</span>
+              Designed to<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>multiply.</span>
             </h2>
             <p style={{ fontFamily: fontBody, fontSize: 22, color: BC.navy, lineHeight: 1.55, fontWeight: 400, marginBottom: 18 }}>
               We're in pursuit of becoming what Jesus originally intended his church to be, and we believe the clearest place to discover that is in the early churches of Scripture. Across them, three elements consistently emerge—and we're convinced these three are key to a multiplying movement.
