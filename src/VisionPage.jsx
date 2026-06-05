@@ -66,7 +66,7 @@ function VisionEquipping() {
 
         {/* Header */}
         <div style={{ maxWidth: 1000, marginBottom: 32 }}>
-          <SectionNumber>01</SectionNumber>
+          <SectionNumber>Conviction One</SectionNumber>
           <Eyebrow>Equipping resources</Eyebrow>
           <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(44px, 6.5vw, 100px)', fontWeight: 800, color: BC.navy, letterSpacing: '-0.035em', lineHeight: 0.96, marginBottom: 36 }}>
             Disciples are made<br/><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>in everyday life.</span>
@@ -94,7 +94,7 @@ function SectionNumber({ children, onDark = false }) {
   return (
     <div style={{
       fontFamily: fontDisplay,
-      fontSize: 'clamp(48px, 5vw, 64px)',
+      fontSize: 'clamp(28px, 3vw, 40px)',
       fontWeight: 800,
       color: onDark ? 'rgba(249,237,214,0.18)' : 'rgba(11,28,55,0.14)',
       letterSpacing: '-0.04em',
@@ -218,7 +218,7 @@ function VisionMultiplying() {
       <img src={TOPO.navy} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.18 }} />
       <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
         <div style={{ maxWidth: 1000, marginBottom: 80 }}>
-          <SectionNumber onDark>02</SectionNumber>
+          <SectionNumber onDark>Conviction Two</SectionNumber>
           <Eyebrow>Multiplying</Eyebrow>
           <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(44px, 6.5vw, 100px)', fontWeight: 800, color: BC.cream, letterSpacing: '-0.035em', lineHeight: 0.96, marginBottom: 36 }}>
             We only do what is<br/><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>worth multiplying.</span>
@@ -382,7 +382,7 @@ function VisionBuildings({ onNav }) {
 
         {/* Pull quote */}
         <div style={{ maxWidth: 1100, marginBottom: 100 }}>
-          <SectionNumber>03</SectionNumber>
+          <SectionNumber>Conviction Three</SectionNumber>
           <Eyebrow>On buildings</Eyebrow>
           <h2 style={{
             fontFamily: fontDisplay,
