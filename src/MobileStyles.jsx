@@ -13,8 +13,31 @@ function MobileStyles() {
 }
 [data-device="mobile"] * {
   -webkit-tap-highlight-color: transparent;
+  max-width: 100%;
 }
 [data-device="mobile"] img { max-width: 100%; }
+
+/* ═══════════════════════════════════════════════════
+   TEXT OVERFLOW PREVENTION
+   Remove white-space: nowrap from all non-button elements
+   so long strings wrap instead of running off screen.
+   Buttons keep their nowrap so labels stay on one line.
+═══════════════════════════════════════════════════ */
+[data-device="mobile"] span[style*="white-space: nowrap"],
+[data-device="mobile"] span[style*="whiteSpace"],
+[data-device="mobile"] div[style*="white-space: nowrap"] {
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+[data-device="mobile"] h1,
+[data-device="mobile"] h2,
+[data-device="mobile"] h3,
+[data-device="mobile"] h4 {
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+  hyphens: auto !important;
+}
 
 /* ═══════════════════════════════════════════════════
    HAMBURGER — hidden globally, shown on mobile only
