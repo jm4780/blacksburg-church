@@ -436,6 +436,7 @@ button[data-bc-hamburger] { display: none !important; }
 /* ═══════════════════════════════════════════════════
    MAP LEGEND — swap overlay → full-width bar on mobile
 ═══════════════════════════════════════════════════ */
+[data-bc-map-legend-bar] { display: none !important; }
 [data-device="mobile"] [data-bc-map-legend-overlay] { display: none !important; }
 [data-device="mobile"] [data-bc-map-legend-bar] { display: flex !important; }
 

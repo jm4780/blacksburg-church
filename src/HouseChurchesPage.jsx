@@ -394,16 +394,16 @@ function MapView({ filtered, launching, selected, setSelected }) {
     <div data-bc-map-legend-bar style={{
       display: 'none', alignItems: 'center', justifyContent: 'space-around',
       padding: '11px 20px',
-      borderTop: `1px solid ${BC.border}`,
-      background: BC.white,
+      borderTop: 'none',
+      background: 'rgba(15,34,51,0.9)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <img src="assets/brandmark-orange.png" alt="" style={{ width: 11, height: 16, display: 'block' }} />
-        <span style={{ fontFamily: fontBody, fontSize: 12, color: BC.navy, fontWeight: 400 }}>Meeting Now</span>
+        <span style={{ fontFamily: fontBody, fontSize: 11, color: BC.cream, fontWeight: 400 }}>Meeting Now</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         <img src="assets/brandmark-orange.png" alt="" style={{ width: 11, height: 16, display: 'block', opacity: 0.55 }} />
-        <span style={{ fontFamily: fontBody, fontSize: 12, color: BC.navy, fontWeight: 400 }}>Future House Churches</span>
+        <span style={{ fontFamily: fontBody, fontSize: 11, color: BC.cream, fontWeight: 400 }}>Future House Churches</span>
       </div>
     </div>
     </div>
