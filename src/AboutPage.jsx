@@ -69,7 +69,7 @@ function AboutPage({ onNav }) {
       <section style={{ background: BC.navy, padding: '120px 48px', position: 'relative', overflow: 'hidden' }}>
         <img src={TOPO.navy} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.2 }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
-          <Eyebrow>Simple church</Eyebrow>
+          <Eyebrow>We keep it simple</Eyebrow>
           <h2 data-bc-h2 style={{ fontFamily: fontDisplay, fontSize: 56, fontWeight: 800, color: BC.cream, letterSpacing: '-0.025em', lineHeight: 1.05, marginBottom: 72, maxWidth: 620 }}>
             Three things.<br />That's it.
           </h2>
@@ -104,7 +104,7 @@ function AboutPage({ onNav }) {
           <div style={{ maxWidth: 960, marginBottom: 72 }}>
             <Eyebrow>What makes us different</Eyebrow>
             <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(44px, 6.5vw, 88px)', fontWeight: 800, color: BC.navy, letterSpacing: '-0.035em', lineHeight: 0.98, marginBottom: 36 }}>
-              What sets us<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>apart.</span>
+              The church<br />Jesus <span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>intended.</span>
             </h2>
             <p style={{ fontFamily: fontBody, fontSize: 22, color: BC.navy, lineHeight: 1.55, fontWeight: 400, marginBottom: 18 }}>
               Blacksburg Church is one church of many house churches, connected under one common eldership — built around <em style={{ fontStyle: 'italic', fontWeight: 400 }}>distributed pastoral leadership</em>, <em style={{ fontStyle: 'italic', fontWeight: 400 }}>diverse discipleship communities</em>, and <em style={{ fontStyle: 'italic', fontWeight: 400 }}>decentralized from primary place and pastor</em>.
