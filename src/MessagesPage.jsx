@@ -5,7 +5,7 @@
 const YT_KEY      = 'AIzaSyCT_Mj3GFI1XeJUkvHpMBGaeJdwGMnO1Uk';
 const YT_PLAYLIST = 'PL6y7I4ZAQRS50NzxHXBtaQzqMM_4PeUp_';
 const YT_CHANNEL  = 'https://www.youtube.com/@blacksburgchurch';
-const CACHE_KEY   = 'bc-sermons-v3';
+const CACHE_KEY   = 'bc-sermons-v4';
 const CACHE_TTL   = 60 * 60 * 1000; // 1 hour
 
 const SERIES_DESCS = {
@@ -73,11 +73,14 @@ async function fetchSermons() {
 
   const ids = items.map(i => i.snippet.resourceId.videoId).join(',');
   const durRes = await fetch(
-    `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${ids}&key=${YT_KEY}`
+    `https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&id=${ids}&key=${YT_KEY}`
   );
   const durData = durRes.ok ? await durRes.json() : { items: [] };
-  const durMap = {};
-  (durData.items || []).forEach(v => { durMap[v.id] = parseDuration(v.contentDetails.duration); });
+  const durMap = {}, dateMap = {};
+  (durData.items || []).forEach(v => {
+    durMap[v.id] = parseDuration(v.contentDetails.duration);
+    dateMap[v.id] = v.snippet?.publishedAt || '';
+  });
 
   const messages = items.map((item, i) => {
     const s = item.snippet;
@@ -91,7 +94,7 @@ async function fetchSermons() {
       series:  parsed.series,
       passage: parsed.passage,
       book:    parsed.book,
-      date:    formatDate(s.publishedAt),
+      date:    formatDate(dateMap[videoId] || s.publishedAt),
       length:  durMap[videoId] || '',
     };
   });
