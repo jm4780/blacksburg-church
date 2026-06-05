@@ -42,12 +42,12 @@ function AboutPage({ onNav }) {
       <div data-bc-pytall style={{ background: BC.navy, padding: '100px 48px 88px', position: 'relative', overflow: 'hidden' }}>
         <img src={TOPO.navyOrange} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35, pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
-          <Eyebrow>Who We Are</Eyebrow>
+          <Eyebrow>New Here</Eyebrow>
           <h1 data-bc-h1-xl style={{ fontFamily: fontDisplay, fontSize: 'clamp(52px, 8vw, 108px)', fontWeight: 800, color: BC.cream, letterSpacing: '-0.03em', lineHeight: 0.98, marginBottom: 24, maxWidth: 1000 }}>
-            A church of<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>house churches.</span>
+            Welcome to<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>Blacksburg Church.</span>
           </h1>
           <p style={{ fontFamily: fontBody, fontSize: 20, color: 'rgba(249,237,214,0.8)', lineHeight: 1.6, maxWidth: 680, fontWeight: 300 }}>
-            One church made up of many fully functioning individual house churches, connected together by common oversight, identity, and mission.
+            Thanks for checking out our website. We're a new church in the New River Valley and can't wait to meet you. Here's a little about who we are.
           </p>
         </div>
       </div>
@@ -69,10 +69,13 @@ function AboutPage({ onNav }) {
       <section style={{ background: BC.navy, padding: '120px 48px', position: 'relative', overflow: 'hidden' }}>
         <img src={TOPO.navy} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.2 }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
-          <Eyebrow>We keep it simple</Eyebrow>
-          <h2 data-bc-h2 style={{ fontFamily: fontDisplay, fontSize: 56, fontWeight: 800, color: BC.cream, letterSpacing: '-0.025em', lineHeight: 1.05, marginBottom: 72, maxWidth: 620 }}>
-            Three things.<br />That's it.
+          <Eyebrow>What we are</Eyebrow>
+          <h2 data-bc-h2 style={{ fontFamily: fontDisplay, fontSize: 56, fontWeight: 800, color: BC.cream, letterSpacing: '-0.025em', lineHeight: 1.05, marginBottom: 24, maxWidth: 620 }}>
+            A church of<br />house churches.
           </h2>
+          <p style={{ fontFamily: fontBody, fontSize: 18, color: 'rgba(249,237,214,0.75)', lineHeight: 1.7, fontWeight: 300, maxWidth: 620, marginBottom: 72 }}>
+            One church made up of many fully functioning individual house churches connected together by common oversight, identity, and mission.
+          </p>
           <div data-bc-grid style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
             {[
             { num: '01', title: 'Sunday gatherings.', body: 'We gather to worship Jesus as one church, in one place, under one roof, every Sunday. These gatherings include sermons from the Bible, singing, sharing stories, silence, and scripture readings.' },

@@ -1,7 +1,7 @@
 // Blacksburg Church — Nav + Footer + Announcement bar
 
 const NAV_LINKS = [
-  { label: 'Who we are',        slug: 'about' },
+  { label: 'New Here',           slug: 'about' },
   { label: 'House Churches',    slug: 'house-churches' },
   { label: 'Sunday Gatherings', slug: 'gatherings' },
   { label: 'Partners',          slug: 'partners' },
@@ -180,7 +180,7 @@ function MobileMenu({ onClose, activePage, onNav }) {
 function Footer({ onNav }) {
   const cols = [
     { title: 'Explore', items: [
-      ['Who we are', 'about'],
+      ['New Here', 'about'],
       ['House Churches', 'house-churches'],
       ['Sunday Gatherings', 'gatherings'],
       ['Partners', 'partners'],
