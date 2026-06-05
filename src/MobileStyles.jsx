@@ -370,12 +370,12 @@ button[data-bc-hamburger] { display: none !important; }
 }
 
 /* Library row: 4-col → 2-col (icon + title; hide series + duration) */
-[data-device="mobile"] [style*="grid-template-columns: 52px 1fr 180px 80px"] {
+[data-device="mobile"] [data-bc-library-row] {
   grid-template-columns: 40px 1fr !important;
   gap: 14px !important;
   padding: 16px 16px !important;
 }
-[data-device="mobile"] [style*="grid-template-columns: 52px 1fr 180px 80px"] > *:nth-child(n+3) {
+[data-device="mobile"] [data-bc-library-row] > *:nth-child(n+3) {
   display: none !important;
 }
 /* Filter rows */

@@ -279,7 +279,7 @@ function MessagesPage({ onNav }) {
   const seriesData = React.useMemo(() => buildSeriesData(messages), [messages]);
   const allBooks   = React.useMemo(() => Array.from(new Set(messages.map(m => m.book))).filter(Boolean).sort(), [messages]);
 
-  React.useEffect(() => { if (openSermon) window.scrollTo({ top: 0 }); }, [openSermon]);
+  const viewSermon = (m) => { window.scrollTo({ top: 0, behavior: 'instant' }); setOpenSermon(m); };
 
   if (openSermon) {
     return <SermonDetail sermon={openSermon} onBack={() => setOpenSermon(null)} messages={messages} seriesData={seriesData} />;
@@ -338,7 +338,7 @@ function MessagesPage({ onNav }) {
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 40, alignItems: 'stretch' }}>
-                <div data-bc-latest-thumb onClick={() => setOpenSermon(latest)} style={{
+                <div data-bc-latest-thumb onClick={() => viewSermon(latest)} style={{
                   position: 'relative', aspectRatio: '16/9', borderRadius: 4, overflow: 'hidden',
                   background: BC.navyDark, cursor: 'pointer',
                 }}
@@ -379,10 +379,10 @@ function MessagesPage({ onNav }) {
                     </div>
                   )}
                   <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                    <Button variant="primary" size="lg" onClick={() => setOpenSermon(latest)}>
+                    <Button variant="primary" size="lg" onClick={() => viewSermon(latest)}>
                       <PlayIcon size={11} color="#fff" /> Watch
                     </Button>
-                    <Button variant="outline" size="lg" onClick={() => setOpenSermon(latest)}>
+                    <Button variant="outline" size="lg" onClick={() => viewSermon(latest)}>
                       <HeadphonesIcon size={13} color="currentColor" /> Listen
                     </Button>
                   </div>
@@ -484,7 +484,7 @@ function MessagesPage({ onNav }) {
                   <button onClick={() => { setBookFilter('All'); setSeriesFilter('All'); }} style={{ background: 'transparent', border: 'none', color: BC.orange, cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit', textDecoration: 'underline' }}>Clear them</button>.
                 </div>
               ) : filtered.map((m, i) => (
-                <div key={m.id} onClick={() => setOpenSermon(m)} style={{
+                <div key={m.id} data-bc-library-row onClick={() => viewSermon(m)} style={{
                   display: 'grid', gridTemplateColumns: '52px 1fr 180px 80px',
                   gap: 20, padding: '18px 24px',
                   borderTop: i === 0 ? 'none' : `1px solid ${BC.border}`,
