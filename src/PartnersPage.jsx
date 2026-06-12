@@ -281,7 +281,7 @@ function PartnersPage({ onNav }) {
       {/* PARTNERS GRID */}
       <section style={{ background: BC.white, padding: '100px 48px' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{ marginBottom: 48, display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'end' }}>
+          <div data-bc-partners-head style={{ marginBottom: 48, display: 'grid', gridTemplateColumns: '1fr auto', gap: 32, alignItems: 'end' }}>
             <div>
               <Eyebrow>Who we're partnered with</Eyebrow>
               <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(38px, 5vw, 56px)', fontWeight: 800, color: BC.navy, letterSpacing: '-0.025em', lineHeight: 1.0, marginTop: 10, maxWidth: 760 }}>
@@ -314,7 +314,7 @@ function PartnersPage({ onNav }) {
               No {scopeFilter.toLowerCase()} partners listed yet.
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 20, alignItems: 'start' }}>
+            <div data-bc-partners-grid style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 20, alignItems: 'start' }}>
               {visiblePartners.map(p => (
                 <PartnerCard key={p.num} partner={p} />
               ))}
@@ -357,7 +357,7 @@ function PartnersPage({ onNav }) {
             </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, borderTop: '1px solid rgba(249,237,214,0.18)' }}>
+          <div data-bc-lockarms style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, borderTop: '1px solid rgba(249,237,214,0.18)' }}>
             {[
               {
                 tag: '01 · Prayer',
@@ -406,7 +406,7 @@ function PartnersPage({ onNav }) {
             </h2>
           </div>
 
-          <div style={{ borderTop: `1px solid ${BC.border}` }}>
+          <div data-bc-partners-faq style={{ borderTop: `1px solid ${BC.border}` }}>
             {faqs.map((f, i) => {
               const open = openFaq === i;
               return (

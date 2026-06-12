@@ -271,6 +271,7 @@ button[data-bc-hamburger] { display: none !important; }
 [data-device="mobile"] [style*="grid-template-columns: 1.1fr 1fr"],
 [data-device="mobile"] [style*="grid-template-columns: 1fr 1.2fr"],
 [data-device="mobile"] [style*="grid-template-columns: 1.2fr 1fr"],
+[data-device="mobile"] [style*="grid-template-columns: 1fr 1.4fr"],
 [data-device="mobile"] [style*="grid-template-columns: 1.4fr 1fr"],
 [data-device="mobile"] [style*="grid-template-columns: 1.3fr 1fr"],
 [data-device="mobile"] [style*="grid-template-columns: 1.5fr 1fr 1fr 1.2fr"] {
@@ -526,6 +527,58 @@ button[data-bc-hamburger] { display: none !important; }
 [data-device="mobile"] section[style*="padding: 80px 48px"] > div[style*="space-between"] > button {
   width: 100% !important;
   justify-content: center !important;
+}
+
+/* ═══════════════════════════════════════════════════
+   MINISTRY PARTNERS PAGE
+═══════════════════════════════════════════════════ */
+/* Section header: heading + side note grid → stacked */
+[data-device="mobile"] [data-bc-partners-head] {
+  display: block !important;
+  margin-bottom: 32px !important;
+}
+[data-device="mobile"] [data-bc-partners-head] > div:last-child {
+  max-width: none !important;
+  margin-top: 14px !important;
+}
+/* Partner cards: min 360px columns overflow phones → single column */
+[data-device="mobile"] [data-bc-partners-grid] {
+  grid-template-columns: 1fr !important;
+  gap: 16px !important;
+}
+[data-device="mobile"] [data-bc-partners-grid] > div {
+  padding: 22px 18px !important;
+}
+/* Three ways we lock arms: stacked with horizontal dividers */
+[data-device="mobile"] [data-bc-lockarms] {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+}
+[data-device="mobile"] [data-bc-lockarms] > div {
+  border-right: none !important;
+  padding: 28px 0 24px !important;
+  border-bottom: 1px solid rgba(249,237,214,0.18);
+}
+[data-device="mobile"] [data-bc-lockarms] > div:last-child {
+  border-bottom: none;
+  padding-bottom: 4px !important;
+}
+[data-device="mobile"] [data-bc-lockarms] h3 {
+  font-size: 24px !important;
+  margin-bottom: 12px !important;
+}
+[data-device="mobile"] [data-bc-lockarms] > div > div:first-child {
+  margin-bottom: 14px !important;
+}
+/* FAQ: tighter rows, no right gutter on answers */
+[data-device="mobile"] [data-bc-partners-faq] button {
+  padding: 20px 0 !important;
+}
+[data-device="mobile"] [data-bc-partners-faq] button > span:first-child {
+  font-size: 18px !important;
+}
+[data-device="mobile"] [data-bc-partners-faq] button + div {
+  padding-right: 0 !important;
 }
 
 /* ═══════════════════════════════════════════════════
