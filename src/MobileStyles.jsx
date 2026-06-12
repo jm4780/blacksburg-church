@@ -41,8 +41,7 @@ function MobileStyles() {
 [data-device="mobile"] h3,
 [data-device="mobile"] h4 {
   overflow-wrap: break-word !important;
-  word-break: break-word !important;
-  hyphens: auto !important;
+  hyphens: none !important;
 }
 
 /* ═══════════════════════════════════════════════════
