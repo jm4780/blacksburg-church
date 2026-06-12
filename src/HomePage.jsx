@@ -338,7 +338,7 @@ function HomeGatherings({ onNav }) {
               One church,{' '}<br/>one gathering,{' '}<br/>every Sunday.
             </h2>
             <p style={{ fontFamily: fontBody, fontSize: 18, color: 'rgba(249,237,214,0.75)', lineHeight: 1.7, marginBottom: 20, fontWeight: 300 }}>
-              On Sundays, our house churches come together for one gathering — songs, Scripture, stories, a sermon, and a little space for silence. Kids are welcome right in the room with you. Come early, grab coffee.
+              On Sundays, we all come together as one church for one gathering — songs, Scripture, stories, a sermon, and a little space for silence. You don't have to be part of a house church to join us — Sundays are for everyone. Kids are welcome right in the room with you. Come early, grab coffee.
             </p>
             <div style={{ display: 'flex', gap: 40, margin: '36px 0', flexWrap: 'wrap' }}>
               <div>

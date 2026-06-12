@@ -189,7 +189,7 @@ function SermonPlayer({ sermon, mode, setMode }) {
       {mode === 'audio' && (
         <div style={{ padding: '32px 28px', background: BC.navyDark, borderRadius: 4, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <p style={{ fontFamily: fontBody, fontSize: 15, color: 'rgba(249,237,214,0.75)', fontWeight: 300, lineHeight: 1.6 }}>
-            Audio coming soon — listen on YouTube or subscribe to the podcast below.
+            Audio coming soon — for now, you can watch or listen on YouTube.
           </p>
           <a href={`https://www.youtube.com/watch?v=${sermon.videoId}`} target="_blank" rel="noreferrer">
             <Button variant="primary" size="md">Open on YouTube <ArrowRight color="#fff" /></Button>
