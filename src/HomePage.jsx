@@ -195,7 +195,7 @@ function AboutPreview({ onNav }) {
         <Reveal delay={120}>
           <Eyebrow>Who we are</Eyebrow>
           <h2 data-bc-h2 style={{ fontFamily: fontDisplay, fontSize: 56, fontWeight: 800, color: BC.navy, letterSpacing: '-0.025em', lineHeight: 1.05, marginBottom: 28 }}>
-            A different<br/>kind of church.
+            A different{' '}<br/>kind of church.
           </h2>
           <p style={{ fontFamily: fontBody, fontSize: 18, color: BC.navyMuted, lineHeight: 1.7, marginBottom: 20, fontWeight: 300 }}>
             We exist to equip all people to find and follow Jesus. Every Sunday we gather as one church, in one place, under one roof — and the rest of the week we meet in house churches across the New River Valley so that every person can be personally known and connected.
@@ -266,7 +266,7 @@ function HomeHouseChurches({ onNav }) {
           <div>
             <Eyebrow>House Churches</Eyebrow>
             <h2 data-bc-h2 style={{ fontFamily: fontDisplay, fontSize: 56, fontWeight: 800, color: BC.navy, letterSpacing: '-0.025em', lineHeight: 1.05, maxWidth: 520 }}>
-              One church,<br/>multiple homes.
+              One church,{' '}<br/>multiple homes.
             </h2>
           </div>
           <Button variant="outline" size="lg" onClick={() => onNav && onNav('house-churches')}>
@@ -335,7 +335,7 @@ function HomeGatherings({ onNav }) {
           <Reveal>
             <Eyebrow>Sunday Gatherings</Eyebrow>
             <h2 data-bc-h2 style={{ fontFamily: fontDisplay, fontSize: 56, fontWeight: 800, color: BC.cream, letterSpacing: '-0.025em', lineHeight: 1.05, marginBottom: 28 }}>
-              One church,<br/>one gathering,<br/>every Sunday.
+              One church,{' '}<br/>one gathering,{' '}<br/>every Sunday.
             </h2>
             <p style={{ fontFamily: fontBody, fontSize: 18, color: 'rgba(249,237,214,0.75)', lineHeight: 1.7, marginBottom: 20, fontWeight: 300 }}>
               On Sundays, our house churches come together for one gathering — songs, Scripture, stories, a sermon, and a little space for silence. Kids are welcome right in the room with you. Come early, grab coffee.
@@ -456,7 +456,7 @@ function HomeCTA({ onNav }) {
       <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 32 }}>
         <h2 style={{ fontFamily: fontDisplay, fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 800, color: BC.white, letterSpacing: '-0.02em', lineHeight: 1.05, maxWidth: 720 }}>
           Not sure where to start?<br/>
-          <span style={{ color: BC.navy }}>Start with a conversation.</span>
+          <span style={{ color: BC.navy }}>Start with a<br/>conversation.</span>
         </h2>
         <Button variant="navy" size="xl" onClick={() => onNav && onNav('connect')}>
           Connect <ArrowRight color={BC.cream} />
