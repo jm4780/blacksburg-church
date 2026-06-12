@@ -43,7 +43,7 @@ const CONNECT_MODES = {
       { key: 'location',    title: 'Who\u2019s coming?',          sub: 'Helps our hospitality team know how to welcome you well.' },
       { key: 'preferences', title: 'Where do you live?',          sub: 'Pick the closest one. We\u2019ll go from there.' },
       { key: 'contact',     title: 'How should we reach you?',    sub: 'We\u2019ll send a short note before Sunday.' },
-      { key: 'done',        title: 'See you Sunday.',             sub: 'We\u2019ll be looking for you.' },
+      { key: 'done',        title: 'We can\u2019t wait to meet you.', sub: 'We\u2019ll be looking for you.' },
     ],
     options: [
       { id: 'this-sunday', label: 'This Sunday.',         sub: 'See you in a few days.' },
