@@ -40,14 +40,65 @@ const BOARDS = {
     columns: ({ email, phone, context }) => ({
       email_mm4058vs:     { email, text: email },
       phone_mm40rv3a:     phone ? { phone, countryShortName: 'US' } : null,
-      text_mm40znzm:      context.visiting   || '',
-      text_mm408yc:       context.party       || '',
+      text_mm40znzm:      context.visiting    || '',
+      text_mm408yc:       context.party        || '',
       text_mm4099ee:      context.neighborhood || '',
       long_text_mm40zh3p: context.note ? { text: context.note } : null,
       date_mm40nqpg:      { date: today() },
     }),
   },
-  // connect, host, house-church, waitlist, partner — added as Monday boards are created
+  connect: {
+    boardId: 18417581433,
+    columns: ({ email, phone, context }) => ({
+      email_mm48962z:     { email, text: email },
+      phone_mm485z6r:     phone ? { phone, countryShortName: 'US' } : null,
+      long_text_mm48b0sv: context.situation    ? { text: context.situation }                           : null,
+      text_mm48nee0:      Array.isArray(context.preferences) ? context.preferences.join(', ') : (context.preferences || ''),
+      text_mm48bghz:      context.neighborhood || '',
+      long_text_mm48zwqm: context.note         ? { text: context.note }                               : null,
+      date_mm48903v:      { date: today() },
+    }),
+  },
+  host: {
+    boardId: 18417581463,
+    columns: ({ email, phone, context }) => ({
+      email_mm48ca14:     { email, text: email },
+      phone_mm48bmzk:     phone ? { phone, countryShortName: 'US' } : null,
+      text_mm48fwxm:      context.readiness    || '',
+      long_text_mm48w2qt: context.reason       ? { text: context.reason }  : null,
+      text_mm48s8d7:      context.address      || '',
+      long_text_mm48n8mm: context.note         ? { text: context.note }    : null,
+      date_mm4881az:      { date: today() },
+    }),
+  },
+  'house-church': {
+    boardId: 18417581486,
+    columns: ({ email, phone, context }) => ({
+      email_mm48egph:  { email, text: email },
+      phone_mm48cdpw:  phone ? { phone, countryShortName: 'US' } : null,
+      text_mm48xfb4:   context.houseChurch || '',
+      date_mm48v7mq:   { date: today() },
+    }),
+  },
+  waitlist: {
+    boardId: 18417581508,
+    columns: ({ email, phone, context }) => ({
+      email_mm48ctn0:  { email, text: email },
+      phone_mm4822dp:  phone ? { phone, countryShortName: 'US' } : null,
+      text_mm487dh6:   context.houseChurch || '',
+      text_mm48wmy1:   context.town        || '',
+      date_mm48a2p9:   { date: today() },
+    }),
+  },
+  partner: {
+    boardId: 18417581522,
+    columns: ({ email, phone, context }) => ({
+      email_mm48zecb:  { email, text: email },
+      phone_mm48rjrm:  phone ? { phone, countryShortName: 'US' } : null,
+      text_mm48e7m5:   context.partner || '',
+      date_mm48fdqg:   { date: today() },
+    }),
+  },
 };
 
 exports.handler = async (event) => {
