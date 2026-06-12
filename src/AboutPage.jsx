@@ -309,7 +309,7 @@ function AboutPage({ onNav }) {
                   textDecorationThickness: '2px',
                 }}
               >
-                Read our vision <ArrowRight color={BC.orange} />
+                Our core convictions <ArrowRight color={BC.orange} />
               </button>
             </div>
           </Reveal>

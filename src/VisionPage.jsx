@@ -11,12 +11,12 @@ function VisionHero() {
     <div data-bc-pytall style={{ background: BC.navy, padding: '120px 48px 100px', position: 'relative', overflow: 'hidden' }}>
       <img src={TOPO.navyOrange} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35, pointerEvents: 'none' }} />
       <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
-        <Eyebrow>Vision</Eyebrow>
+        <Eyebrow>Convictions</Eyebrow>
         <h1 data-bc-h1-xl style={{ fontFamily: fontDisplay, fontSize: 'clamp(56px, 9vw, 132px)', fontWeight: 800, color: BC.cream, letterSpacing: '-0.035em', lineHeight: 0.94, marginBottom: 32, maxWidth: 1100 }}>
-          What He's put<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>on our hearts.</span>
+          Not a plan.<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>A compass.</span>
         </h1>
         <p style={{ fontFamily: fontBody, fontSize: 21, color: 'rgba(249,237,214,0.85)', lineHeight: 1.6, maxWidth: 760, fontWeight: 300 }}>
-          What follows isn't a strategic plan we cooked up. It's a set of convictions God has placed on our hearts for this church in Blacksburg and beyond.
+          This isn't a strategic plan, and it isn't a statement of what we believe. These are core convictions about what we will and will not do. They aren't the only convictions we hold, and they won't be the last. They're here to paint a picture of where we're headed.
         </p>
       </div>
     </div>
@@ -458,7 +458,7 @@ function VisionBuildings({ onNav }) {
             textTransform: 'uppercase',
             color: BC.muted,
           }}>
-            Blacksburg Church · Vision
+            Blacksburg Church · Convictions
           </div>
           <button
             onClick={() => onNav && onNav('about')}
