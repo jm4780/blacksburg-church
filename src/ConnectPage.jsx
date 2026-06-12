@@ -6,12 +6,7 @@ const CONNECT_MODES = {
     h1: 'Let\u2019s get you connected.',
     sub: 'Tell us a little about you so we can point you toward a next step that actually fits and connect you with the right people.',
     duration: '\u2248 90 seconds',
-    intro: {
-      lead: '',
-      body: '',
-    },
     steps: [
-      { key: 'intro',       title: 'Ready when you are.',           sub: 'Five quick steps. About 90 seconds.' },
       { key: 'situation',   title: 'Where you\u2019re at.',         sub: 'Pick whatever fits. You can change your mind later.' },
       { key: 'preferences', title: 'What can we help with?',        sub: 'Pick anything that applies — this tells us what next steps would actually help.' },
       { key: 'location',    title: 'Where do you live?',            sub: 'Pick the closest one. We\u2019ll go from there.' },
@@ -33,12 +28,7 @@ const CONNECT_MODES = {
     h1: 'Be our guest.',
     sub: 'Planning to join us on a Sunday morning? Tell us you\u2019re coming so we can host you well.',
     duration: '\u2248 60 seconds',
-    intro: {
-      lead: '',
-      body: '',
-    },
     steps: [
-      { key: 'intro',       title: 'We\u2019d love to host you.', sub: 'Tell us you\u2019re coming and we\u2019ll be ready when you arrive — someone to say hello, a seat saved, and a few less unknowns on your first Sunday.' },
       { key: 'situation',   title: 'Which Sunday?',               sub: 'We gather Sundays at 10am at the Blacksburg Public Library.' },
       { key: 'location',    title: 'Who\u2019s coming?',          sub: 'Helps our hospitality team know how to welcome you well.' },
       { key: 'preferences', title: 'Where do you live?',          sub: 'Pick the closest one. We\u2019ll go from there.' },
@@ -58,9 +48,7 @@ const CONNECT_MODES = {
     h1: 'Open your home.',
     sub: 'Do you have the gift of hospitality? Here\u2019s how we define hospitality: you love having people in your home, and people love being in your home. This has nothing to do with the size or quality of your home — it\u2019s a God-given gift to make any space feel welcoming.',
     duration: '\u2248 90 seconds',
-    intro: { lead: '', body: '' },
     steps: [
-      { key: 'intro',       title: 'We\u2019d love to have you on the team.', sub: 'Hosts are the backbone of how house churches happen — let\u2019s walk through this together.' },
       { key: 'situation',   title: 'Where are you with this?',              sub: 'Pick whatever fits best. We\u2019ll go from there.' },
       { key: 'preferences', title: 'Why would you like to host?', sub: 'Tell us what\u2019s drawing you to this — and anything else you\u2019d like us to know.' },
       { key: 'location',    title: 'Where do you live?',                    sub: 'House churches are proximity-based, so location matters.' },
@@ -132,7 +120,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
       });
     } catch (_) {}
     setSubmitting(false);
-    setStep(5);
+    setStep(4);
   };
   const togglePref = (id) => setData(d => ({ ...d, prefs: d.prefs.includes(id) ? d.prefs.filter(p => p !== id) : [...d.prefs, id] }));
 
@@ -141,14 +129,14 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
   const progress = (step / totalQuestionSteps) * 100;
 
   const canAdvance = isVisit ? {
-    0: true, 1: !!data.situation, 2: !!data.neighborhood,
-    3: !!data.homebase, 4: data.name && data.email, 5: false,
+    0: !!data.situation, 1: !!data.neighborhood,
+    2: !!data.homebase, 3: data.name && data.email, 4: false,
   }[step] : isHost ? {
-    0: true, 1: !!data.situation, 2: true,
-    3: !!data.neighborhood, 4: data.name && data.email, 5: false,
+    0: !!data.situation, 1: true,
+    2: !!data.neighborhood, 3: data.name && data.email, 4: false,
   }[step] : {
-    0: true, 1: !!data.situation, 2: true,
-    3: !!data.neighborhood, 4: data.name && data.email, 5: false,
+    0: !!data.situation, 1: true,
+    2: !!data.neighborhood, 3: data.name && data.email, 4: false,
   }[step];
 
   const titleSize = compact ? 28 : 'clamp(34px, 3.8vw, 52px)';
@@ -178,19 +166,6 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
         </p>
 
         {step === 0 && (
-          <div>
-            {cfg.intro.lead && (
-              <p style={{ fontFamily: fontDisplay, fontSize: compact ? 17 : 22, fontWeight: 400, fontStyle: 'italic', color: BC.navy, lineHeight: 1.3, letterSpacing: '-0.01em', marginBottom: 12 }}>
-                {cfg.intro.lead}
-              </p>
-            )}
-            <p style={{ fontFamily: fontBody, fontSize: compact ? 14 : 16, color: BC.navyMuted, lineHeight: 1.6, fontWeight: 300 }}>
-              {cfg.intro.body}
-            </p>
-          </div>
-        )}
-
-        {step === 1 && (
           <div style={{ display: 'grid', gap: 8 }}>
             {cfg.options.map(s => (
               <button
@@ -215,7 +190,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           </div>
         )}
 
-        {step === 2 && isVisit && (
+        {step === 1 && isVisit && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
             {PARTY_OPTIONS.map(n => (
               <button
@@ -233,7 +208,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           </div>
         )}
 
-        {step === 2 && !isVisit && !isHost && (
+        {step === 1 && !isVisit && !isHost && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
             {PREFS_CONNECT.map(p => (
               <button
@@ -262,7 +237,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           </div>
         )}
 
-        {step === 2 && isHost && (
+        {step === 1 && isHost && (
           <div>
             <textarea
               value={data.hostReason || ''}
@@ -275,7 +250,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           </div>
         )}
 
-        {step === 3 && !isVisit && !isHost && (
+        {step === 2 && !isVisit && !isHost && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
             {NEIGHBORHOODS.map(n => (
               <button
@@ -293,7 +268,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           </div>
         )}
 
-        {step === 3 && isVisit && (
+        {step === 2 && isVisit && (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
             {NEIGHBORHOODS.map(n => (
               <button
@@ -311,7 +286,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           </div>
         )}
 
-        {step === 3 && isHost && (
+        {step === 2 && isHost && (
           <div>
             <label style={{ fontFamily: fontDisplay, fontSize: 11, fontWeight: 600, color: BC.navy, letterSpacing: '0.1em', textTransform: 'uppercase', display: 'block', marginBottom: 6 }}>Address</label>
             <input
@@ -328,7 +303,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           </div>
         )}
 
-        {step === 4 && (
+        {step === 3 && (
           <div style={{ display: 'grid', gap: 14 }}>
             {[
               { label: 'Your name', key: 'name', placeholder: 'Jordan Smith' },
@@ -361,7 +336,7 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           </div>
         )}
 
-        {step === 5 && (
+        {step === 4 && (
           <div style={{ padding: compact ? '8px 0' : '24px 0' }}>
             <Button variant="navy" onClick={() => onDone && onDone()}>{compact ? 'Close' : 'Back to home'}</Button>
           </div>
@@ -377,10 +352,10 @@ function ConnectForm({ mode = 'connect', onDone, compact = false }) {
           ) : <span />}
           <Button
             variant="primary" size="md"
-            onClick={step === 4 ? submitForm : next}
+            onClick={step === 3 ? submitForm : next}
             style={{ opacity: (canAdvance && !submitting) ? 1 : 0.4, pointerEvents: (canAdvance && !submitting) ? 'auto' : 'none' }}
           >
-            {step === 0 ? 'Get started' : (step === 4 ? (submitting ? 'Sending…' : 'Submit') : 'Continue')} <ArrowRight color="#fff" />
+            {step === 3 ? (submitting ? 'Sending…' : 'Submit') : 'Continue'} <ArrowRight color="#fff" />
           </Button>
         </div>
       )}

@@ -57,8 +57,14 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "announcementBar": true
 }/*EDITMODE-END*/;
 
+const PAGE_SLUGS = ['home', 'about', 'house-churches', 'gatherings', 'messages', 'give', 'connect', 'host', 'vision', 'partners'];
+const pageFromHash = () => {
+  const slug = window.location.hash.replace(/^#\/?/, '');
+  return PAGE_SLUGS.includes(slug) ? slug : null;
+};
+
 function App() {
-  const [page, setPage] = React.useState(() => localStorage.getItem('bc-page') || 'home');
+  const [page, setPage] = React.useState(() => pageFromHash() || localStorage.getItem('bc-page') || 'home');
   const [pageOpts, setPageOpts] = React.useState({});
   const [tweaks, setTweaks] = React.useState(TWEAK_DEFAULTS);
   const [editMode, setEditMode] = React.useState(false);
@@ -67,8 +73,23 @@ function App() {
     setPage(p);
     setPageOpts(opts);
     localStorage.setItem('bc-page', p);
+    if (pageFromHash() !== p) window.history.pushState(null, '', `#/${p}`);
     window.scrollTo({ top: 0, behavior: 'instant' });
   };
+
+  // Browser back/forward support — keep page state in sync with the URL hash
+  React.useEffect(() => {
+    if (!pageFromHash()) window.history.replaceState(null, '', `#/${page}`);
+    const onPop = () => {
+      const p = pageFromHash() || 'home';
+      setPage(p);
+      setPageOpts({});
+      localStorage.setItem('bc-page', p);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   // Device detection — sets data-device on body for CSS targeting
   React.useEffect(() => {
@@ -112,7 +133,7 @@ function App() {
 
       {page === 'home'           && <HomePage onNav={navigate} heroVariant={tweaks.heroVariant} />}
       {page === 'about'          && <AboutPage onNav={navigate} />}
-      {page === 'house-churches' && <HouseChurchesPage onNav={navigate} />}
+      {page === 'house-churches' && <HouseChurchesPage onNav={navigate} anchor={pageOpts.anchor} />}
       {page === 'gatherings'     && <GatheringsPage onNav={navigate} />}
       {page === 'messages'       && <MessagesPage onNav={navigate} />}
       {page === 'give'           && <GivePage onNav={navigate} />}

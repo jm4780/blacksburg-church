@@ -1,10 +1,10 @@
 // Blacksburg Church — Nav + Footer + Announcement bar
 
 const NAV_LINKS = [
-  { label: 'New Here',           slug: 'about' },
+  { label: 'Who We Are',        slug: 'about' },
   { label: 'House Churches',    slug: 'house-churches' },
   { label: 'Sunday Gatherings', slug: 'gatherings' },
-  { label: 'Partners',          slug: 'partners' },
+  { label: 'Ministry Partners', slug: 'partners' },
   { label: 'Messages',          slug: 'messages' },
   { label: 'Give',              slug: 'give' },
 ];
@@ -180,16 +180,16 @@ function MobileMenu({ onClose, activePage, onNav }) {
 function Footer({ onNav }) {
   const cols = [
     { title: 'Explore', items: [
-      ['New Here', 'about'],
+      ['Who We Are', 'about'],
+      ['Vision', 'vision'],
       ['House Churches', 'house-churches'],
       ['Sunday Gatherings', 'gatherings'],
-      ['Partners', 'partners'],
+      ['Ministry Partners', 'partners'],
       ['Messages', 'messages'],
     ]},
     { title: 'Connect', items: [
       ["Connect", 'connect'],
       ['Give', 'give'],
-      ['Contact', 'connect'],
     ]},
   ];
 

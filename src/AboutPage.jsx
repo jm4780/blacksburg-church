@@ -42,7 +42,7 @@ function AboutPage({ onNav }) {
       <div data-bc-pytall style={{ background: BC.navy, padding: '100px 48px 88px', position: 'relative', overflow: 'hidden' }}>
         <img src={TOPO.navyOrange} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35, pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
-          <Eyebrow>New Here</Eyebrow>
+          <Eyebrow>Who We Are</Eyebrow>
           <h1 data-bc-h1-xl style={{ fontFamily: fontDisplay, fontSize: 'clamp(52px, 8vw, 108px)', fontWeight: 800, color: BC.cream, letterSpacing: '-0.03em', lineHeight: 0.98, marginBottom: 24, maxWidth: 1000 }}>
             Welcome to<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>Blacksburg Church.</span>
           </h1>

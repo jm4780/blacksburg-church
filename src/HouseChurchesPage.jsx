@@ -90,9 +90,9 @@ function HouseChurchCard({ hc, selected, onSelect }) {
           <div style={{ fontFamily: fontDisplay, fontSize: 9, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: BC.muted }}>When</div>
           <div style={{ fontFamily: fontDisplay, fontSize: 14, fontWeight: 700, color: BC.navy }}>{hc.day} · {hc.time}</div>
         </div>
-        {selected && !signupOpen && (
+        {!signupOpen && !signupSent && (
           <div style={{ marginTop: 18, paddingTop: 18, borderTop: `1px solid ${BC.border}` }}>
-            <Button variant="primary" size="sm" onClick={(e) => { e.stopPropagation(); setSignupOpen(true); }}>
+            <Button variant="primary" size="sm" onClick={(e) => { e.stopPropagation(); onSelect && onSelect(hc.num); setSignupOpen(true); }}>
               Connect me <ArrowRight color="#fff" />
             </Button>
           </div>
@@ -415,8 +415,15 @@ function MapLegend() {
   return null;
 }
 
-function HouseChurchesPage({ onNav }) {
+function HouseChurchesPage({ onNav, anchor }) {
   const [selected, setSelected] = React.useState(null);
+
+  // Jump to a section (e.g. future locations) when navigated here with an anchor
+  React.useEffect(() => {
+    if (!anchor) return;
+    const el = document.getElementById(anchor);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'instant' });
+  }, [anchor]);
 
   const filtered = ALL_HOUSE_CHURCHES;
 
