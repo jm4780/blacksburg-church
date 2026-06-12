@@ -431,7 +431,7 @@ function HouseChurchesPage({ onNav }) {
             One church,<br/><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange, whiteSpace: 'nowrap' }}>many house churches.</span>
           </h1>
           <p style={{ fontFamily: fontBody, fontSize: 20, color: 'rgba(249,237,214,0.8)', lineHeight: 1.6, maxWidth: 680, fontWeight: 300 }}>
-            We meet in house churches each week so every person can be personally known and pastored.
+            We meet in house churches each week so every person is known by name and cared for by a pastor who actually knows them.
           </p>
         </div>
       </div>
