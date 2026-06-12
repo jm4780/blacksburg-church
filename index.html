@@ -67,7 +67,7 @@ function App() {
     setPage(p);
     setPageOpts(opts);
     localStorage.setItem('bc-page', p);
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   // Device detection — sets data-device on body for CSS targeting

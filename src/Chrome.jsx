@@ -235,9 +235,6 @@ function Footer({ onNav }) {
               Blacksburg Public Library<br />
               200 Miller St, Blacksburg, VA 24060
             </div>
-            <a href="mailto:hello@blacksburg.church" style={{ fontFamily: fontBody, fontSize: 14, color: BC.orange, textDecoration: 'none', fontWeight: 400 }}>
-              hello@blacksburg.church
-            </a>
           </div>
         </div>
 
