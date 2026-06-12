@@ -106,8 +106,11 @@ function GatheringsPage({ onNav }) {
           { q: 'Do I need to believe in anything to come?', a: 'Nope. You\'re welcome whether you\'re a lifelong Christian, totally skeptical, or somewhere in between. Bring your questions.' },
           { q: 'What should I wear?', a: 'Whatever you\'re comfortable in. Some people wear jeans, some wear shorts, some wear flannels, some wear T-shirts. We don\'t care.' },
           { q: 'What about my kids?', a: 'Kids are genuinely welcome — all ages, right in the gathering with you. We don\'t have a separate kids\' program or nursery at our current location, but we\'ll have a few small things on hand to help keep little ones engaged.' },
+          { q: 'I\'m a student — is this for me?', a: 'Absolutely. Students are part of every house church and Sunday gathering — not a separate program off to the side. And we meet year-round, including summers and breaks.' },
           { q: 'Will I be singled out?', a: 'No. We won\'t ask visitors to stand up or introduce yourself. You can hang back as much as you want.' },
-          { q: 'Is there anywhere to park?', a: 'Yes — the library\'s free lot, plus on-street parking nearby.' },
+          { q: 'Is there anywhere to park?', a: 'Yes — the library\'s free lot, plus on-street parking nearby. No car? We\'re downtown, an easy walk from campus.' },
+          { q: 'Will I be asked for money?', a: 'No. Giving is something for the people who call this church home. As our guest, please don\'t feel any pressure to give.' },
+          { q: 'Are you part of a denomination?', a: 'No — we\'re an independent church, part of a family of churches known simply as Christian churches.' },
           { q: 'Can I just try a house church instead?', a: 'Absolutely — many people start there. Check the house church finder or ask us on the connect page.' }]
           } />
         </div>
@@ -147,7 +150,7 @@ function FAQList({ items }) {
               </span>
             </button>
             <div style={{
-              maxHeight: isOpen ? 200 : 0, overflow: 'hidden',
+              maxHeight: isOpen ? 600 : 0, overflow: 'hidden',
               transition: 'max-height 300ms ease', paddingBottom: isOpen ? 24 : 0
             }}>
               <p style={{ fontFamily: fontBody, fontSize: 16, color: BC.navyMuted, lineHeight: 1.75, fontWeight: 300, maxWidth: 680 }}>{it.a}</p>

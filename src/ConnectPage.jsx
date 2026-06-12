@@ -90,7 +90,7 @@ const HOST_PREFS = [
 const PARTY_OPTIONS = ['Just me', 'Me + a partner', 'My family with kids', 'A group of friends', 'Not sure yet'];
 const PREFS_CONNECT = [
   { id: 'house-church',  label: 'I want to try house church.' },
-  { id: 'discipled',     label: 'I want to be discipled.' },
+  { id: 'discipled',     label: 'I want help growing in my faith.' },
   { id: 'baptism',       label: 'I\u2019m thinking about baptism.' },
   { id: 'community',     label: 'I want to meet people.' },
   { id: 'questions',     label: 'I have questions about faith.' },

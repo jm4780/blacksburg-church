@@ -80,7 +80,7 @@ function AboutPage({ onNav }) {
             {[
             { num: '01', title: 'Sunday gatherings.', body: 'We gather to worship Jesus as one church, in one place, under one roof, every Sunday. These gatherings include sermons from the Bible, singing, sharing stories, silence, and scripture readings.' },
             { num: '02', title: 'House churches.', body: 'The rest of the week, we meet in homes across the New River Valley to eat, pray, discuss, and discover what it means to follow Jesus together. House Church creates space for everyone to know and be known, love and be loved, serve and be served.' },
-            { num: '03', title: 'Ministry partnerships.', body: 'We\'re a small church, but we\'re not in this alone. We partner with others, locally and globally, who are meeting real needs in Jesus name to send, resource, and advance the gospel beyond our walls.' }].
+            { num: '03', title: 'Ministry partnerships.', body: 'We\'re a small church, but we\'re not in this alone. We partner with others, locally and globally, who are meeting real needs in Jesus\' name — and we back them with our prayers, our people, and our money.' }].
             map((b, i) =>
             <Reveal key={b.num} delay={i * 100}>
                 <div style={{ paddingTop: 32, borderTop: `2px solid ${BC.orange}`, height: '100%' }}>
@@ -111,6 +111,9 @@ function AboutPage({ onNav }) {
             </h2>
             <p style={{ fontFamily: fontBody, fontSize: 22, color: BC.navy, lineHeight: 1.55, fontWeight: 400, marginBottom: 18 }}>
               We're in pursuit of becoming what Jesus originally intended his church to be, and we believe the clearest place to discover that is in the early churches of Scripture. Across them, three elements consistently emerge—and we're convinced these three are key to a multiplying movement.
+            </p>
+            <p style={{ fontFamily: fontBody, fontSize: 16, color: BC.navyMuted, lineHeight: 1.6, fontWeight: 300, fontStyle: 'italic' }}>
+              If you're new to church entirely, feel free to skip this part — it's mostly for church people. The short version: we're built to stay personal.
             </p>
           </div>
 
