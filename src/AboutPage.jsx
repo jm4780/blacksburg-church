@@ -113,7 +113,7 @@ function AboutPage({ onNav }) {
               We're in pursuit of becoming what Jesus originally intended his church to be, and we believe the clearest place to discover that is in the early churches of Scripture. Across them, three elements consistently emerge—and we're convinced these three are key to a multiplying movement.
             </p>
             <p style={{ fontFamily: fontBody, fontSize: 16, color: BC.navyMuted, lineHeight: 1.6, fontWeight: 300, fontStyle: 'italic' }}>
-              If you're new to church entirely, feel free to skip this part — it's mostly for church people. The short version: we're built to stay personal.
+              In plain terms: these three commitments are how we keep a growing church personal.
             </p>
           </div>
 
