@@ -218,11 +218,6 @@ function PartnerCard({ partner }) {
 }
 
 function PartnersPage({ onNav }) {
-  const [scopeFilter, setScopeFilter] = React.useState('All');
-  const visiblePartners = React.useMemo(
-    () => scopeFilter === 'All' ? PARTNERS : PARTNERS.filter(p => p.scope === scopeFilter),
-    [scopeFilter]
-  );
   const [openFaq, setOpenFaq] = React.useState(0);
 
   const faqs = [
@@ -293,33 +288,11 @@ function PartnersPage({ onNav }) {
             </div>
           </div>
 
-          {/* Filter */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 32, flexWrap: 'wrap' }}>
-            <div style={{ fontFamily: fontDisplay, fontSize: 10, fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: BC.navyMuted, marginRight: 8 }}>Filter</div>
-            {[{ key: 'All', label: 'All Partners' },{ key: 'Local', label: 'Local' },{ key: 'Regional', label: 'Regional' },{ key: 'Global', label: 'Global' }].map(f => {
-              const active = scopeFilter === f.key;
-              const count = f.key === 'All' ? PARTNERS.length : PARTNERS.filter(p => p.scope === f.key).length;
-              return (
-                <button key={f.key} onClick={() => setScopeFilter(f.key)}
-                  style={{ fontFamily: fontDisplay, fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '10px 18px', borderRadius: 999, border: `1.5px solid ${active ? BC.navy : BC.border}`, background: active ? BC.navy : 'transparent', color: active ? BC.cream : BC.navy, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8, transition: 'all 180ms' }}>
-                  <span>{f.label}</span>
-                  <span style={{ fontSize: 10, color: active ? 'rgba(249,237,214,0.6)' : BC.navyMuted, fontWeight: 600 }}>{count}</span>
-                </button>
-              );
-            })}
+          <div data-bc-partners-grid style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 20, alignItems: 'start' }}>
+            {PARTNERS.map(p => (
+              <PartnerCard key={p.num} partner={p} />
+            ))}
           </div>
-
-          {visiblePartners.length === 0 ? (
-            <div style={{ fontFamily: fontBody, fontSize: 16, color: BC.navyMuted, padding: '48px 24px', textAlign: 'center', border: `1px dashed ${BC.border}`, borderRadius: 6 }}>
-              No {scopeFilter.toLowerCase()} partners listed yet.
-            </div>
-          ) : (
-            <div data-bc-partners-grid style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 20, alignItems: 'start' }}>
-              {visiblePartners.map(p => (
-                <PartnerCard key={p.num} partner={p} />
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
