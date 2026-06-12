@@ -71,7 +71,7 @@ function AboutPage({ onNav }) {
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 1200, margin: '0 auto' }}>
           <Eyebrow>What we are</Eyebrow>
           <h2 data-bc-h2 style={{ fontFamily: fontDisplay, fontSize: 56, fontWeight: 800, color: BC.cream, letterSpacing: '-0.025em', lineHeight: 1.05, marginBottom: 24, maxWidth: 620 }}>
-            A church of<br /><span style={{ fontStyle: 'italic', fontWeight: 300, color: BC.orange }}>house churches.</span>
+            A church of<br /><span style={{ fontStyle: 'italic', fontWeight: 400, color: BC.orange }}>house churches.</span>
           </h2>
           <p style={{ fontFamily: fontBody, fontSize: 18, color: 'rgba(249,237,214,0.75)', lineHeight: 1.7, fontWeight: 300, maxWidth: 620, marginBottom: 72 }}>
             One church made up of many fully functioning individual house churches connected together by common oversight, identity, and mission.
