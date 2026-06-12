@@ -16,13 +16,13 @@ function Announcement({ onNav }) {
       fontFamily: fontBody, fontSize: 12, fontWeight: 400,
       padding: '8px 24px', textAlign: 'center',
       borderBottom: '1px solid rgba(249,237,214,0.08)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, lineHeight: 1,
     }}>
-      <span style={{ width: 6, height: 6, borderRadius: '50%', background: BC.orange, display: 'inline-block' }} />
-      <span style={{ color: 'rgba(249,237,214,0.85)' }}>Sundays at 10:00am · 200 Miller St, Blacksburg</span>
+      <span style={{ width: 6, height: 6, borderRadius: '50%', background: BC.orange, display: 'inline-block', flexShrink: 0 }} />
+      <span style={{ color: 'rgba(249,237,214,0.85)', lineHeight: 1 }}>Sundays at 10:00am · 200 Miller St, Blacksburg</span>
       <a href="#" onClick={(e) => { e.preventDefault(); onNav && onNav('connect', { mode: 'visit' }); }} style={{
         color: BC.orange, fontFamily: fontDisplay, fontWeight: 600, fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase',
-        textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4,
+        textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4, lineHeight: 1, flexShrink: 0,
       }}>
         Be our guest <ArrowRight size={10} />
       </a>
